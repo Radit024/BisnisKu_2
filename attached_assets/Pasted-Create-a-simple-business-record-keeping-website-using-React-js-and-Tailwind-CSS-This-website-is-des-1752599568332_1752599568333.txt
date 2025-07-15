@@ -1,0 +1,63 @@
+Create a simple business record-keeping website using React.js and Tailwind CSS. This website is designed for beginner users (e.g., home-based MSME owners) and must use easy-to-understand language with a clean and user-friendly interface.
+
+🧩 Main Features:
+
+1. Transaction Recording (Income & Expenses)
+   - Input: Date, Type (Income/Expense), Description, Amount (in IDR), Payment Method, Notes (optional)
+   - Purpose: To record sales, material purchases, delivery fees, wages, etc.
+
+2. Production Recording
+   - Input: Production date, Product name, Number of finished products, Materials used (multi-input), Notes (optional)
+   - Purpose: To record product-making activities.
+
+3. Stock Check & Update
+   - Input: Item name, Type (Raw Material / Finished Product), In or Out, Quantity, Reason for change (Production, Sold, Damaged, etc.), Date, Notes
+   - Purpose: To monitor whether stock levels are sufficient or need to be replenished.
+
+4. Business Reports (Automatic)
+   - Display:
+     - Total income and expenses (in IDR)
+     - Products sold
+     - Profit/loss
+     - Simple sales chart
+     - HPP Recap (Cost of Production) per product:
+       - Total material cost / total production units (in IDR)
+     - BEP Recap (Break Even Point):
+       - Break-even calculation based on fixed cost, variable cost, and selling price (all in IDR)
+   - Purpose: To provide an easy-to-read summary of business progress.
+
+5. User Login
+   - Login/Register using Email or Google (Firebase Auth or Supabase Auth)
+   - Data is stored per user
+
+💰 Currency Format:
+- All currency values must be in **Indonesian Rupiah (IDR)**.
+- Format examples: `Rp 10.000`, `Rp 250.000`, `Rp 1.500.000`
+- Use locale `id-ID` for display formatting (e.g., with `.toLocaleString("id-ID", { style: "currency", currency: "IDR" })` in JavaScript)
+
+💡 UI/UX Style:
+- Use friendly, beginner-accessible interface language such as:
+  - “Record Today’s Sales”
+  - “How many products did you make?”
+  - “Click Save when you’re done”
+  - “Check your Break-Even Point”
+- Large buttons, simple icons, and intuitive layout
+
+🎨 Color Theme (Blue Clean Theme):
+- Primary color: `#2196F3` (light blue for buttons and headers)
+- Background: `#F5F5F5` (light gray)
+- Main text: `#1E1E1E` (dark gray)
+- Accent: `#0D47A1` (dark blue for badges, highlights)
+- Save button: blue `#2196F3` with white text
+
+📱 Required Components:
+- Transaction, production, and stock input forms
+- Transaction history table
+- Financial report summary (income/expenses)
+- HPP display per product (e.g., in table form)
+- BEP display (per product or overall business)
+- Trend charts (using Chart.js or Recharts)
+- Login page and main dashboard
+- Simple sidebar menu (icon + text)
+
+The website must be mobile-friendly and fully styled using Tailwind CSS.
