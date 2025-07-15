@@ -35,6 +35,8 @@ export default function Login() {
       .then((result) => {
         if (result?.user) {
           console.log('User signed in:', result.user);
+          // User will be automatically redirected by the Router component
+          // when the auth state changes
         }
       })
       .catch((error) => {
@@ -68,12 +70,14 @@ export default function Login() {
           title: 'Berhasil',
           description: 'Akun berhasil dibuat',
         });
+        // User will be automatically redirected by the Router component
       } else {
         await signInWithEmail(data.email, data.password);
         toast({
           title: 'Berhasil',
           description: 'Berhasil masuk',
         });
+        // User will be automatically redirected by the Router component
       }
     } catch (error: any) {
       console.error('Auth error:', error);

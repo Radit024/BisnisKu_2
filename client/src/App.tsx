@@ -42,7 +42,11 @@ function Router() {
     );
   }
 
-  return user ? <AuthenticatedApp /> : <Login />;
+  if (!user) {
+    return <Login />;
+  }
+
+  return <AuthenticatedApp />;
 }
 
 function App() {
