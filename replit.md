@@ -69,24 +69,35 @@ The system uses five main tables:
 
 ## Deployment Strategy
 
-The application is configured for deployment with the following build process:
+The application is now structured for serverless deployment with separate client and server packages:
 
-1. **Development**: 
-   - Frontend: Vite dev server with HMR
-   - Backend: tsx for TypeScript execution
-   - Database: Drizzle migrations
+### Package Structure
+- `client/` - React frontend with separate package.json, Vite config, and build system
+- `server/` - Express backend with separate package.json, TypeScript config, and build system
+- `shared/` - Shared types and schemas used by both client and server
 
-2. **Production Build**:
-   - Frontend: Vite builds to `dist/public`
-   - Backend: esbuild bundles server code to `dist/index.js`
-   - Database: Drizzle pushes schema changes
+### Deployment Options
 
-3. **Environment Configuration**:
-   - Firebase configuration via environment variables
-   - Database URL configuration for PostgreSQL
-   - Replit-specific optimizations included
+1. **Serverless (Recommended)**:
+   - Frontend: Deploy `client/dist` to Vercel, Netlify, or similar static hosting
+   - Backend: Deploy `server/dist` to Vercel Functions, Netlify Functions, or similar serverless platforms
+   - Database: PostgreSQL on Neon, Supabase, or PlanetScale
 
-The system is designed to be deployed on platforms like Replit, with specific configurations for development and production environments. The build process creates a single deployable package with the frontend assets served by the Express server.
+2. **Traditional Hosting**:
+   - Full stack deployment to Railway, Render, or similar platforms
+   - Single build process serves both frontend and backend
+
+### Build Process
+- Client: `npm run build` in client/ directory produces `dist/` folder
+- Server: `npm run build` in server/ directory produces `dist/` folder
+- Deployment script: `./deploy.sh` handles building both packages
+
+### Environment Configuration
+- Client: `VITE_FIREBASE_*` variables for Firebase configuration
+- Server: `DATABASE_URL` for PostgreSQL connection
+- Vercel configurations included for easy deployment
+
+This structure allows for independent scaling and deployment of frontend and backend components, making it suitable for modern serverless architectures.
 
 ## Key Features
 
