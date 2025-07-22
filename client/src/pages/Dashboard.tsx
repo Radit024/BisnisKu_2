@@ -8,13 +8,19 @@ import {
   DollarSign, 
   ShoppingCart,
   Plus,
-  Factory,
   FileText,
-  AlertTriangle,
   CheckCircle,
   Calendar,
+  Package,
+  Activity,
   BarChart3,
-  PieChart
+  Users,
+  Target,
+  ArrowUpRight,
+  ArrowDownRight,
+  Eye,
+  Star,
+  Zap
 } from 'lucide-react';
 import { formatCurrency } from '@/lib/currency';
 import { Link } from 'wouter';
@@ -50,42 +56,25 @@ export default function Dashboard() {
     queryKey: ['/api/transactions/recent'],
   });
 
-  const { data: lowStockItems } = useQuery<StockItem[]>({
-    queryKey: ['/api/stock/low'],
+  const { data: stockItems } = useQuery<StockItem[]>({
+    queryKey: ['/api/stock'],
   });
-
-  // Simplified chart data
-  const weeklyData = [
-    { day: 'Sen', profit: 1300000 },
-    { day: 'Sel', profit: 1700000 },
-    { day: 'Rab', profit: 1700000 },
-    { day: 'Kam', profit: 2300000 },
-    { day: 'Jum', profit: 2100000 },
-    { day: 'Sab', profit: 2800000 },
-    { day: 'Min', profit: 2300000 }
-  ];
-
-  const categoryData = [
-    { category: 'Makanan', sales: 45, color: 'bg-blue-500' },
-    { category: 'Minuman', sales: 25, color: 'bg-green-500' },
-    { category: 'Snack', sales: 18, color: 'bg-yellow-500' },
-    { category: 'Lainnya', sales: 12, color: 'bg-purple-500' }
-  ];
-
-  const maxProfit = Math.max(...weeklyData.map(d => d.profit));
 
   if (isLoading) {
     return (
-      <div className="space-y-4">
-        <div className="animate-pulse">
-          <div className="h-6 bg-gray-200 rounded w-1/4 mb-2"></div>
-          <div className="h-4 bg-gray-200 rounded w-1/2"></div>
+      <div className="space-y-6">
+        {/* Loading Hero */}
+        <div className="bg-gradient-to-br from-blue-600 via-purple-600 to-indigo-700 rounded-2xl p-8 animate-pulse">
+          <div className="h-8 bg-white/20 rounded-lg w-2/3 mb-2"></div>
+          <div className="h-4 bg-white/20 rounded-lg w-1/2"></div>
         </div>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+        {/* Loading Cards */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
           {[1, 2, 3, 4].map((i) => (
-            <div key={i} className="bg-white rounded-lg p-4 animate-pulse">
+            <div key={i} className="bg-white rounded-2xl p-6 shadow-lg animate-pulse">
               <div className="h-4 bg-gray-200 rounded w-3/4 mb-3"></div>
-              <div className="h-6 bg-gray-200 rounded w-1/2"></div>
+              <div className="h-8 bg-gray-200 rounded w-1/2 mb-2"></div>
+              <div className="h-3 bg-gray-200 rounded w-2/3"></div>
             </div>
           ))}
         </div>
@@ -94,282 +83,477 @@ export default function Dashboard() {
   }
 
   return (
-    <div className="space-y-6">
-      {/* Welcome Header - Compact */}
-      <div className="bg-gradient-to-r from-primary/10 to-secondary/10 rounded-xl p-4 border border-white/20">
-        <div className="flex items-center justify-between">
-          <div>
-            <h2 className="text-2xl font-bold text-text-main mb-1">
-              👋 Selamat datang kembali!
-            </h2>
-            <p className="text-gray-600">Ringkasan bisnis Anda hari ini</p>
-          </div>
-          <div className="hidden md:flex items-center bg-white/80 rounded-lg px-3 py-2">
-            <Calendar className="w-4 h-4 text-primary mr-2" />
-            <div className="text-sm">
-              <p className="font-medium text-text-main">
-                {new Date().toLocaleDateString('id-ID', { 
-                  weekday: 'short', 
-                  day: 'numeric',
-                  month: 'short'
-                })}
-              </p>
+    <div className="space-y-8">
+      {/* Hero Header - Completely Redesigned */}
+      <div className="relative overflow-hidden bg-gradient-to-br from-blue-600 via-purple-600 to-indigo-700 rounded-2xl p-8 text-white">
+        {/* Background Pattern */}
+        <div className="absolute inset-0 opacity-10">
+          <div className="absolute top-0 right-0 w-32 h-32 bg-white rounded-full -translate-y-16 translate-x-16"></div>
+          <div className="absolute bottom-0 left-0 w-24 h-24 bg-white rounded-full translate-y-12 -translate-x-12"></div>
+          <div className="absolute top-1/2 left-1/3 w-16 h-16 bg-white rounded-full"></div>
+          <div className="absolute top-1/4 right-1/4 w-8 h-8 bg-white rounded-full"></div>
+          <div className="absolute bottom-1/4 right-1/3 w-12 h-12 bg-white rounded-full"></div>
+        </div>
+        
+        <div className="relative z-10">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+            {/* Main Welcome Section */}
+            <div className="lg:col-span-8">
+              <div className="flex items-start space-x-6">
+                <div className="bg-white/20 p-4 rounded-2xl backdrop-blur-sm border border-white/30">
+                  <div className="relative">
+                    <Zap className="w-12 h-12 text-white" />
+                    <div className="absolute -top-1 -right-1 w-4 h-4 bg-yellow-400 rounded-full animate-pulse"></div>
+                  </div>
+                </div>
+                
+                <div className="flex-1">
+                  <div className="flex items-center space-x-3 mb-2">
+                    <h1 className="text-4xl font-bold">Halo, Pengusaha! </h1>
+                    <span className="text-3xl animate-bounce">👋</span>
+                  </div>
+                  <p className="text-blue-100 text-xl mb-4">
+                    Selamat pagi! Mari kita lihat bagaimana bisnis Anda berkembang hari ini
+                  </p>
+                  
+                  {/* Status Indicators */}
+                  <div className="flex items-center space-x-6">
+                    <div className="flex items-center space-x-2">
+                      <div className="w-3 h-3 bg-green-400 rounded-full animate-pulse"></div>
+                      <span className="text-green-200 text-sm font-medium">Sistem Online</span>
+                    </div>
+                    <div className="flex items-center space-x-2">
+                      <Activity className="w-4 h-4 text-blue-200" />
+                      <span className="text-blue-200 text-sm">Aktivitas Tinggi</span>
+                    </div>
+                    <div className="flex items-center space-x-2">
+                      <Target className="w-4 h-4 text-purple-200" />
+                      <span className="text-purple-200 text-sm">Target 85% Tercapai</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              
+              {/* Quick Action Buttons */}
+              <div className="flex flex-wrap gap-3 mt-6">
+                <Link href="/transactions">
+                  <Button className="bg-white/20 hover:bg-white/30 text-white border border-white/30 backdrop-blur-sm transition-all">
+                    <Plus className="w-4 h-4 mr-2" />
+                    Transaksi Baru
+                  </Button>
+                </Link>
+                <Link href="/stock">
+                  <Button className="bg-white/20 hover:bg-white/30 text-white border border-white/30 backdrop-blur-sm transition-all">
+                    <Package className="w-4 h-4 mr-2" />
+                    Kelola Stok
+                  </Button>
+                </Link>
+                <Link href="/reports">
+                  <Button className="bg-white/20 hover:bg-white/30 text-white border border-white/30 backdrop-blur-sm transition-all">
+                    <BarChart3 className="w-4 h-4 mr-2" />
+                    Lihat Laporan
+                  </Button>
+                </Link>
+              </div>
+            </div>
+            
+            {/* Stats Dashboard */}
+            <div className="lg:col-span-4">
+              <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-6 border border-white/20">
+                <div className="flex items-center justify-between mb-6">
+                  <h3 className="text-white font-semibold text-lg">Dashboard Hari Ini</h3>
+                  <Calendar className="w-5 h-5 text-blue-200" />
+                </div>
+                
+                <div className="space-y-4">
+                  {/* Date & Time */}
+                  <div className="text-center">
+                    <p className="text-white font-bold text-xl">
+                      {new Date().toLocaleDateString('id-ID', { 
+                        weekday: 'long', 
+                        day: 'numeric',
+                        month: 'long'
+                      })}
+                    </p>
+                    <p className="text-blue-200 text-sm">
+                      {new Date().toLocaleTimeString('id-ID', { 
+                        hour: '2-digit', 
+                        minute: '2-digit'
+                      })} WIB
+                    </p>
+                  </div>
+                  
+                  {/* Mini Stats Grid */}
+                  <div className="grid grid-cols-2 gap-3">
+                    <div className="bg-white/10 rounded-xl p-3 text-center">
+                      <Users className="w-5 h-5 text-blue-200 mx-auto mb-1" />
+                      <p className="text-white font-bold text-lg">24</p>
+                      <p className="text-blue-200 text-xs">Pelanggan</p>
+                    </div>
+                    <div className="bg-white/10 rounded-xl p-3 text-center">
+                      <Target className="w-5 h-5 text-green-200 mx-auto mb-1" />
+                      <p className="text-white font-bold text-lg">85%</p>
+                      <p className="text-green-200 text-xs">Target</p>
+                    </div>
+                    <div className="bg-white/10 rounded-xl p-3 text-center">
+                      <Star className="w-5 h-5 text-yellow-200 mx-auto mb-1" />
+                      <p className="text-white font-bold text-lg">4.8</p>
+                      <p className="text-yellow-200 text-xs">Rating</p>
+                    </div>
+                    <div className="bg-white/10 rounded-xl p-3 text-center">
+                      <Activity className="w-5 h-5 text-purple-200 mx-auto mb-1" />
+                      <p className="text-white font-bold text-lg">High</p>
+                      <p className="text-purple-200 text-xs">Aktivitas</p>
+                    </div>
+                  </div>
+                  
+                  {/* Progress Bar */}
+                  <div className="space-y-2">
+                    <div className="flex justify-between text-sm">
+                      <span className="text-blue-200">Progress Harian</span>
+                      <span className="text-white font-medium">85%</span>
+                    </div>
+                    <div className="w-full bg-white/20 rounded-full h-2">
+                      <div className="bg-gradient-to-r from-green-400 to-blue-400 h-2 rounded-full transition-all duration-1000" style={{ width: '85%' }}></div>
+                    </div>
+                  </div>
+                  
+                  {/* Weather-like Info */}
+                  <div className="bg-white/10 rounded-xl p-3">
+                    <div className="flex items-center justify-between">
+                      <div className="flex items-center space-x-2">
+                        <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>
+                        <span className="text-white text-sm font-medium">Performa Bisnis</span>
+                      </div>
+                      <span className="text-green-300 text-sm font-bold">Excellent</span>
+                    </div>
+                    <p className="text-blue-200 text-xs mt-1">Penjualan meningkat 15% dari kemarin</p>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </div>
       </div>
 
-      {/* Summary Cards - More compact */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-        <Card className="hover:shadow-md transition-shadow duration-200 border-0 bg-white">
-          <CardContent className="p-4">
+      {/* Enhanced Summary Cards */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        <Card className="relative overflow-hidden bg-gradient-to-br from-green-50 to-emerald-50 border-0 shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 group">
+          <CardContent className="p-6">
             <div className="flex items-center justify-between">
               <div className="flex-1">
-                <p className="text-xs text-gray-600 mb-1">Penjualan Hari Ini</p>
-                <p className="text-xl font-bold text-success">
+                <div className="flex items-center mb-2">
+                  <div className="bg-green-100 p-2 rounded-lg mr-3">
+                    <TrendingUp className="w-5 h-5 text-green-600" />
+                  </div>
+                  <p className="text-sm font-medium text-green-700">Penjualan Hari Ini</p>
+                </div>
+                <p className="text-3xl font-bold text-green-900 mb-2">
                   {formatCurrency(summary?.todayIncome || 0)}
                 </p>
-                <p className="text-xs text-green-600 mt-1">+15% dari kemarin</p>
+                <div className="flex items-center space-x-2">
+                  <ArrowUpRight className="w-4 h-4 text-green-600" />
+                  <span className="text-sm text-green-600 font-medium">+15% dari kemarin</span>
+                </div>
               </div>
-              <div className="bg-success/10 p-2 rounded-lg">
-                <TrendingUp className="w-5 h-5 text-success" />
+              <div className="absolute top-4 right-4 opacity-20 group-hover:opacity-30 transition-opacity">
+                <DollarSign className="w-16 h-16 text-green-600" />
               </div>
             </div>
           </CardContent>
         </Card>
 
-        <Card className="hover:shadow-md transition-shadow duration-200 border-0 bg-white">
-          <CardContent className="p-4">
+        <Card className="relative overflow-hidden bg-gradient-to-br from-red-50 to-rose-50 border-0 shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 group">
+          <CardContent className="p-6">
             <div className="flex items-center justify-between">
               <div className="flex-1">
-                <p className="text-xs text-gray-600 mb-1">Pengeluaran</p>
-                <p className="text-xl font-bold text-red-600">
+                <div className="flex items-center mb-2">
+                  <div className="bg-red-100 p-2 rounded-lg mr-3">
+                    <TrendingDown className="w-5 h-5 text-red-600" />
+                  </div>
+                  <p className="text-sm font-medium text-red-700">Pengeluaran</p>
+                </div>
+                <p className="text-3xl font-bold text-red-900 mb-2">
                   {formatCurrency(summary?.todayExpenses || 0)}
                 </p>
-                <p className="text-xs text-red-600 mt-1">-5% dari kemarin</p>
+                <div className="flex items-center space-x-2">
+                  <ArrowDownRight className="w-4 h-4 text-red-600" />
+                  <span className="text-sm text-red-600 font-medium">-5% dari kemarin</span>
+                </div>
               </div>
-              <div className="bg-red-50 p-2 rounded-lg">
-                <TrendingDown className="w-5 h-5 text-red-600" />
+              <div className="absolute top-4 right-4 opacity-20 group-hover:opacity-30 transition-opacity">
+                <TrendingDown className="w-16 h-16 text-red-600" />
               </div>
             </div>
           </CardContent>
         </Card>
 
-        <Card className="hover:shadow-md transition-shadow duration-200 border-0 bg-white">
-          <CardContent className="p-4">
+        <Card className="relative overflow-hidden bg-gradient-to-br from-blue-50 to-cyan-50 border-0 shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 group">
+          <CardContent className="p-6">
             <div className="flex items-center justify-between">
               <div className="flex-1">
-                <p className="text-xs text-gray-600 mb-1">Keuntungan Bersih</p>
-                <p className="text-xl font-bold text-success">
+                <div className="flex items-center mb-2">
+                  <div className="bg-blue-100 p-2 rounded-lg mr-3">
+                    <BarChart3 className="w-5 h-5 text-blue-600" />
+                  </div>
+                  <p className="text-sm font-medium text-blue-700">Keuntungan Bersih</p>
+                </div>
+                <p className="text-3xl font-bold text-blue-900 mb-2">
                   {formatCurrency((summary?.todayIncome || 0) - (summary?.todayExpenses || 0))}
                 </p>
-                <p className="text-xs text-gray-500 mt-1">
-                  Margin: {summary?.todayIncome ? Math.round(((summary.todayIncome - (summary.todayExpenses || 0)) / summary.todayIncome) * 100) : 0}%
-                </p>
+                <div className="flex items-center space-x-2">
+                  <span className="text-sm text-blue-600 font-medium">
+                    Margin: {summary?.todayIncome ? Math.round(((summary.todayIncome - (summary.todayExpenses || 0)) / summary.todayIncome) * 100) : 0}%
+                  </span>
+                </div>
               </div>
-              <div className="bg-success/10 p-2 rounded-lg">
-                <DollarSign className="w-5 h-5 text-success" />
+              <div className="absolute top-4 right-4 opacity-20 group-hover:opacity-30 transition-opacity">
+                <DollarSign className="w-16 h-16 text-blue-600" />
               </div>
             </div>
           </CardContent>
         </Card>
 
-        <Card className="hover:shadow-md transition-shadow duration-200 border-0 bg-white">
-          <CardContent className="p-4">
+        <Card className="relative overflow-hidden bg-gradient-to-br from-purple-50 to-violet-50 border-0 shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105 group">
+          <CardContent className="p-6">
             <div className="flex items-center justify-between">
               <div className="flex-1">
-                <p className="text-xs text-gray-600 mb-1">Produk Terjual</p>
-                <p className="text-xl font-bold text-secondary">
+                <div className="flex items-center mb-2">
+                  <div className="bg-purple-100 p-2 rounded-lg mr-3">
+                    <ShoppingCart className="w-5 h-5 text-purple-600" />
+                  </div>
+                  <p className="text-sm font-medium text-purple-700">Produk Terjual</p>
+                </div>
+                <p className="text-3xl font-bold text-purple-900 mb-2">
                   {summary?.productsSold || 0}
                 </p>
-                <p className="text-xs text-gray-500 mt-1">Unit hari ini</p>
+                <div className="flex items-center space-x-2">
+                  <span className="text-sm text-purple-600 font-medium">Unit hari ini</span>
+                </div>
               </div>
-              <div className="bg-secondary/10 p-2 rounded-lg">
-                <ShoppingCart className="w-5 h-5 text-secondary" />
+              <div className="absolute top-4 right-4 opacity-20 group-hover:opacity-30 transition-opacity">
+                <ShoppingCart className="w-16 h-16 text-purple-600" />
               </div>
             </div>
           </CardContent>
         </Card>
       </div>
 
-      {/* Charts - Simplified */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-        {/* Weekly Profit Chart - Simplified */}
-        <Card className="border-0 bg-white shadow-sm">
-          <CardHeader className="pb-3 px-4 pt-4">
-            <CardTitle className="text-sm font-semibold text-text-main flex items-center">
-              <BarChart3 className="w-4 h-4 text-success mr-2" />
-              Keuntungan 7 Hari Terakhir
+      {/* Enhanced Stock Section */}
+      <Card className="border-0 bg-white shadow-xl rounded-2xl overflow-hidden">
+        <CardHeader className="bg-gradient-to-r from-gray-50 to-blue-50 border-b border-gray-100">
+          <div className="flex items-center justify-between">
+            <CardTitle className="text-xl font-bold text-gray-900 flex items-center">
+              <div className="bg-blue-100 p-2 rounded-xl mr-3">
+                <Package className="w-6 h-6 text-blue-600" />
+              </div>
+              <div>
+                <span className="block">Inventori Stok</span>
+                <span className="text-sm font-normal text-gray-500">Monitor stok produk Anda</span>
+              </div>
+              {stockItems && stockItems.length > 0 && (
+                <Badge className="ml-3 bg-blue-100 text-blue-800 hover:bg-blue-200">
+                  {stockItems.length} Item
+                </Badge>
+              )}
             </CardTitle>
-          </CardHeader>
-          <CardContent className="px-4 pb-4">
-            <div className="flex items-end justify-between h-32 space-x-2">
-              {weeklyData.map((day, index) => {
-                const height = (day.profit / maxProfit) * 100;
-                
+            <div className="flex space-x-2">
+              <Button variant="outline" size="sm" className="hover:bg-blue-50 hover:border-blue-200 hover:text-blue-700 transition-colors">
+                <Eye className="w-4 h-4 mr-2" />
+                Lihat Detail
+              </Button>
+              <Link href="/stock">
+                <Button size="sm" className="bg-blue-600 hover:bg-blue-700 text-white transition-colors shadow-lg">
+                  <Plus className="w-4 h-4 mr-2" />
+                  Kelola Stok
+                </Button>
+              </Link>
+            </div>
+          </div>
+        </CardHeader>
+        <CardContent className="p-6">
+          {stockItems && stockItems.length > 0 ? (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+              {stockItems.slice(0, 6).map((item, index) => {
+                const getStockStatus = (stock: number) => {
+                  if (stock <= 10) return { 
+                    status: 'Rendah', 
+                    color: 'bg-red-50 border-red-200', 
+                    badge: 'destructive', 
+                    textColor: 'text-red-600',
+                    icon: '⚠️'
+                  };
+                  if (stock <= 30) return { 
+                    status: 'Sedang', 
+                    color: 'bg-yellow-50 border-yellow-200', 
+                    badge: 'secondary', 
+                    textColor: 'text-yellow-600',
+                    icon: '⚡'
+                  };
+                  return { 
+                    status: 'Aman', 
+                    color: 'bg-green-50 border-green-200', 
+                    badge: 'default', 
+                    textColor: 'text-green-600',
+                    icon: '✅'
+                  };
+                };
+
+                const stockStatus = getStockStatus(item.currentStock);
+
                 return (
-                  <div key={index} className="flex flex-col items-center flex-1">
-                    <div className="w-full flex flex-col items-center justify-end h-24 mb-2">
-                      <div className="text-xs text-gray-600 mb-1 font-medium">
-                        {formatCurrency(day.profit)}
+                  <div 
+                    key={item.id} 
+                    className={`p-4 rounded-xl border-2 ${stockStatus.color} hover:shadow-lg transition-all duration-200 hover:scale-105`}
+                    style={{ animationDelay: `${index * 100}ms` }}
+                  >
+                    <div className="flex items-center justify-between mb-3">
+                      <div className="flex items-center space-x-2">
+                        <span className="text-lg">{stockStatus.icon}</span>
+                        <h4 className="font-semibold text-gray-900">{item.itemName}</h4>
                       </div>
-                      <div 
-                        className="w-8 bg-gradient-to-t from-success to-success/70 rounded-t-md transition-all duration-500 ease-out"
-                        style={{ height: `${height}%` }}
-                      ></div>
+                      <Badge variant={stockStatus.badge as any} className="text-xs">
+                        {stockStatus.status}
+                      </Badge>
                     </div>
-                    <span className="text-xs font-medium text-gray-700">{day.day}</span>
+                    <div className="flex items-center justify-between">
+                      <div>
+                        <p className="text-sm text-gray-600">Stok Tersedia</p>
+                        <p className={`text-lg font-bold ${stockStatus.textColor}`}>
+                          {item.currentStock} {item.unit}
+                        </p>
+                      </div>
+                      <div className={`w-16 h-2 rounded-full bg-gray-200 overflow-hidden`}>
+                        <div 
+                          className={`h-full transition-all duration-500 ${
+                            item.currentStock <= 10 ? 'bg-red-500' :
+                            item.currentStock <= 30 ? 'bg-yellow-500' : 'bg-green-500'
+                          }`}
+                          style={{ width: `${Math.min(item.currentStock / 50 * 100, 100)}%` }}
+                        ></div>
+                      </div>
+                    </div>
                   </div>
                 );
               })}
             </div>
-            
-            <div className="mt-4 pt-3 border-t border-gray-100 text-center">
-              <p className="text-xs text-gray-500">Total Keuntungan Minggu Ini</p>
-              <p className="text-sm font-bold text-success">
-                {formatCurrency(weeklyData.reduce((sum, day) => sum + day.profit, 0))}
-              </p>
-            </div>
-          </CardContent>
-        </Card>
-
-        {/* Category Sales Chart - Simplified */}
-        <Card className="border-0 bg-white shadow-sm">
-          <CardHeader className="pb-3 px-4 pt-4">
-            <CardTitle className="text-sm font-semibold text-text-main flex items-center">
-              <PieChart className="w-4 h-4 text-secondary mr-2" />
-              Penjualan per Kategori
-            </CardTitle>
-          </CardHeader>
-          <CardContent className="px-4 pb-4">
-            <div className="space-y-4">
-              {categoryData.map((category, index) => (
-                <div key={index} className="flex items-center justify-between">
-                  <div className="flex items-center flex-1">
-                    <div className={`w-4 h-4 ${category.color} rounded mr-3`}></div>
-                    <span className="text-sm font-medium text-text-main flex-1">{category.category}</span>
-                  </div>
-                  <div className="flex items-center space-x-3">
-                    <div className="w-20 bg-gray-200 rounded-full h-3">
-                      <div 
-                        className={`h-3 ${category.color} rounded-full transition-all duration-500`}
-                        style={{ width: `${category.sales}%` }}
-                      ></div>
-                    </div>
-                    <span className="text-sm font-bold text-text-main w-8 text-right">{category.sales}%</span>
-                  </div>
-                </div>
-              ))}
-            </div>
-            
-            <div className="mt-4 pt-3 border-t border-gray-100 text-center">
-              <p className="text-xs text-gray-500">Kategori Terlaris</p>
-              <p className="text-sm font-bold text-secondary">Makanan (45%)</p>
-            </div>
-          </CardContent>
-        </Card>
-      </div>
-
-      {/* Low Stock - Full width */}
-      <Card className="border-0 bg-white">
-        <CardHeader className="pb-3">
-          <CardTitle className="text-base font-semibold text-text-main flex items-center">
-            <AlertTriangle className="w-4 h-4 mr-2 text-orange-500" />
-            Stok Rendah
-            {lowStockItems && lowStockItems.length > 0 && (
-              <Badge variant="destructive" className="ml-2 text-xs">
-                {lowStockItems.length}
-              </Badge>
-            )}
-          </CardTitle>
-        </CardHeader>
-        <CardContent>
-          {lowStockItems && lowStockItems.length > 0 ? (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
-              {lowStockItems.slice(0, 6).map((item) => (
-                <div key={item.id} className="flex items-center justify-between p-3 bg-red-50 rounded-lg border border-red-100">
-                  <div className="flex-1">
-                    <p className="font-medium text-text-main text-sm">{item.itemName}</p>
-                    <p className="text-xs text-gray-600">
-                      Stok: <span className="font-semibold text-red-600">{item.currentStock}</span> {item.unit}
-                    </p>
-                  </div>
-                  <Badge variant="destructive" className="text-xs">
-                    Rendah
-                  </Badge>
-                </div>
-              ))}
-            </div>
           ) : (
-            <div className="text-center py-6">
-              <CheckCircle className="w-12 h-12 text-green-500 mx-auto mb-2" />
-              <p className="text-sm text-gray-500">Semua stok dalam kondisi baik</p>
+            <div className="text-center py-12">
+              <div className="bg-gray-100 rounded-full w-20 h-20 mx-auto mb-4 flex items-center justify-center">
+                <Package className="w-10 h-10 text-gray-400" />
+              </div>
+              <h3 className="text-xl font-semibold text-gray-900 mb-2">Belum ada data stok</h3>
+              <p className="text-gray-500 mb-6">Mulai tambahkan produk untuk memantau inventori Anda</p>
+              <Link href="/stock">
+                <Button className="bg-blue-600 hover:bg-blue-700 text-white shadow-lg">
+                  <Plus className="w-5 h-5 mr-2" />
+                  Tambah Produk Pertama
+                </Button>
+              </Link>
             </div>
           )}
         </CardContent>
       </Card>
 
-      {/* Recent Transactions - Compact table */}
-      <Card className="border-0 bg-white">
-        <CardHeader className="pb-3">
+      {/* Enhanced Recent Transactions */}
+      <Card className="border-0 bg-white shadow-xl rounded-2xl overflow-hidden">
+        <CardHeader className="bg-gradient-to-r from-gray-50 to-purple-50 border-b border-gray-100">
           <div className="flex items-center justify-between">
-            <CardTitle className="text-base font-semibold text-text-main flex items-center">
-              <FileText className="w-4 h-4 mr-2 text-secondary" />
-              Transaksi Terbaru
+            <CardTitle className="text-xl font-bold text-gray-900 flex items-center">
+              <div className="bg-purple-100 p-2 rounded-xl mr-3">
+                <FileText className="w-6 h-6 text-purple-600" />
+              </div>
+              <div>
+                <span className="block">Aktivitas Terbaru</span>
+                <span className="text-sm font-normal text-gray-500">Transaksi terkini hari ini</span>
+              </div>
             </CardTitle>
             <Link href="/transactions">
-              <Button variant="outline" size="sm">
+              <Button variant="outline" className="hover:bg-purple-50 hover:border-purple-200 hover:text-purple-700 transition-colors">
+                <Eye className="w-4 h-4 mr-2" />
                 Lihat Semua
               </Button>
             </Link>
           </div>
         </CardHeader>
-        <CardContent className="pt-0">
-          <div className="overflow-x-auto">
-            {recentTransactions && recentTransactions.length > 0 ? (
-              <div className="space-y-2">
-                {recentTransactions.slice(0, 5).map((transaction) => (
-                  <div key={transaction.id} className="flex items-center justify-between p-3 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors">
-                    <div className="flex items-center flex-1">
-                      <div className={`w-2 h-2 rounded-full mr-3 ${
-                        transaction.type === 'income' ? 'bg-green-500' : 'bg-red-500'
-                      }`}></div>
+        <CardContent className="p-0">
+          {recentTransactions && recentTransactions.length > 0 ? (
+            <div className="divide-y divide-gray-100">
+              {recentTransactions.slice(0, 5).map((transaction, index) => (
+                <div 
+                  key={transaction.id} 
+                  className="p-6 hover:bg-gray-50 transition-colors duration-200"
+                  style={{ animationDelay: `${index * 100}ms` }}
+                >
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center space-x-4">
+                      <div className={`p-3 rounded-xl ${
+                        transaction.type === 'income' 
+                          ? 'bg-green-100 text-green-600' 
+                          : 'bg-red-100 text-red-600'
+                      }`}>
+                        {transaction.type === 'income' ? (
+                          <ArrowUpRight className="w-5 h-5" />
+                        ) : (
+                          <ArrowDownRight className="w-5 h-5" />
+                        )}
+                      </div>
                       <div className="flex-1">
-                        <p className="font-medium text-sm text-text-main">{transaction.description}</p>
-                        <p className="text-xs text-gray-500">
-                          {new Date(transaction.date).toLocaleDateString('id-ID')}
-                        </p>
+                        <h4 className="font-semibold text-gray-900 mb-1">
+                          {transaction.description}
+                        </h4>
+                        <div className="flex items-center space-x-3 text-sm text-gray-500">
+                          <span className="flex items-center">
+                            <Calendar className="w-3 h-3 mr-1" />
+                            {new Date(transaction.date).toLocaleDateString('id-ID', {
+                              day: 'numeric',
+                              month: 'short',
+                              hour: '2-digit',
+                              minute: '2-digit'
+                            })}
+                          </span>
+                          <span className="px-2 py-1 bg-gray-100 rounded-full text-xs font-medium">
+                            {transaction.type === 'income' ? '💰 Pemasukan' : '💸 Pengeluaran'}
+                          </span>
+                        </div>
                       </div>
                     </div>
-                    <div className="flex items-center space-x-2">
-                      <span className={`font-bold text-sm ${
+                    <div className="text-right">
+                      <p className={`text-xl font-bold ${
                         transaction.type === 'income' ? 'text-green-600' : 'text-red-600'
                       }`}>
                         {transaction.type === 'income' ? '+' : '-'} {formatCurrency(transaction.amount)}
-                      </span>
+                      </p>
                       <Badge 
                         variant={transaction.type === 'income' ? 'default' : 'destructive'}
-                        className="text-xs"
+                        className={`mt-1 ${
+                          transaction.type === 'income' 
+                            ? 'bg-green-100 text-green-800 hover:bg-green-200' 
+                            : 'bg-red-100 text-red-800 hover:bg-red-200'
+                        }`}
                       >
-                        {transaction.type === 'income' ? '💰' : '💸'}
+                        {transaction.type === 'income' ? 'Masuk' : 'Keluar'}
                       </Badge>
                     </div>
                   </div>
-                ))}
+                </div>
+              ))}
+            </div>
+          ) : (
+            <div className="text-center py-16">
+              <div className="bg-gray-100 rounded-full w-20 h-20 mx-auto mb-4 flex items-center justify-center">
+                <FileText className="w-10 h-10 text-gray-400" />
               </div>
-            ) : (
-              <div className="text-center py-8">
-                <FileText className="w-12 h-12 text-gray-300 mx-auto mb-3" />
-                <p className="text-gray-500 mb-3">Belum ada transaksi hari ini</p>
-                <Link href="/transactions">
-                  <Button size="sm" className="bg-primary hover:bg-primary/90">
-                    <Plus className="w-4 h-4 mr-2" />
-                    Tambah Transaksi
-                  </Button>
-                </Link>
-              </div>
-            )}
-          </div>
+              <h3 className="text-xl font-semibold text-gray-900 mb-2">Belum ada transaksi</h3>
+              <p className="text-gray-500 mb-6">Mulai catat penjualan pertama Anda untuk melihat aktivitas di sini</p>
+              <Link href="/transactions">
+                <Button className="bg-purple-600 hover:bg-purple-700 text-white shadow-lg">
+                  <Plus className="w-5 h-5 mr-2" />
+                  Tambah Transaksi Pertama
+                </Button>
+              </Link>
+            </div>
+          )}
         </CardContent>
       </Card>
     </div>

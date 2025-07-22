@@ -8,6 +8,7 @@ import {
   BarChart3, 
   DollarSign, 
   Target, 
+  Award, 
   PieChart, 
   Calendar, 
   Download, 
@@ -20,19 +21,19 @@ import {
 import { formatCurrency } from '@/lib/currency';
 
 export default function Reports() {
-  const { data: financialSummary = {}, isLoading: loadingFinancial } = useQuery({
+  const { data: financialSummary, isLoading: loadingFinancial } = useQuery({
     queryKey: ['/api/reports/financial'],
   });
 
-  const { data: topProducts = [], isLoading: loadingProducts } = useQuery({
+  const { data: topProducts, isLoading: loadingProducts } = useQuery({
     queryKey: ['/api/reports/top-products'],
   });
 
-  const { data: hpp = [], isLoading: loadingHpp } = useQuery({
+  const { data: hpp, isLoading: loadingHpp } = useQuery({
     queryKey: ['/api/reports/hpp'],
   });
 
-  const { data: bep = [], isLoading: loadingBep } = useQuery({
+  const { data: bep, isLoading: loadingBep } = useQuery({
     queryKey: ['/api/reports/bep'],
   });
 
@@ -116,9 +117,10 @@ export default function Reports() {
       </div>
 
       <div className="px-6 py-12 space-y-12">
-        {/* Enhanced Financial Summary & Top Products */}
+
+      <div className="px-6 py-12 space-y-12">
+        {/* Enhanced Financial Summary */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-          {/* Financial Summary Card */}
           <Card className="group bg-white border-0 shadow-2xl hover:shadow-3xl transition-all duration-500 overflow-hidden">
             <CardHeader className="bg-gradient-to-r from-emerald-500 to-teal-600 text-white relative overflow-hidden">
               <div className="absolute top-0 right-0 w-32 h-32 bg-white/10 rounded-full -translate-y-16 translate-x-16 group-hover:scale-150 transition-transform duration-700"></div>
@@ -204,7 +206,6 @@ export default function Reports() {
             </CardContent>
           </Card>
 
-          {/* Top Products Card */}
           <Card className="group bg-white border-0 shadow-2xl hover:shadow-3xl transition-all duration-500 overflow-hidden">
             <CardHeader className="bg-gradient-to-r from-purple-500 to-pink-600 text-white relative overflow-hidden">
               <div className="absolute top-0 right-0 w-32 h-32 bg-white/10 rounded-full -translate-y-16 translate-x-16 group-hover:scale-150 transition-transform duration-700"></div>
@@ -232,7 +233,7 @@ export default function Reports() {
                 </div>
               ) : (
                 <div className="space-y-4">
-                  {Array.isArray(topProducts) && topProducts.length > 0 ? topProducts.map((product: any, index: number) => (
+                  {Array.isArray(topProducts) && topProducts.map((product: any, index: number) => (
                     <div key={index} className="group/product relative overflow-hidden bg-gradient-to-br from-purple-50 via-pink-50 to-rose-50 rounded-2xl p-6 border border-purple-200 hover:shadow-xl transition-all duration-300">
                       <div className="absolute top-0 right-0 w-16 h-16 bg-purple-200/20 rounded-full -translate-y-8 translate-x-8 group-hover/product:scale-150 transition-transform duration-500"></div>
                       <div className="relative z-10 flex items-center justify-between">
@@ -256,7 +257,8 @@ export default function Reports() {
                         </div>
                       </div>
                     </div>
-                  )) : (
+                  ))}
+                  {!Array.isArray(topProducts) || !topProducts.length && (
                     <div className="text-center py-12">
                       <div className="w-20 h-20 bg-gradient-to-br from-gray-100 to-gray-200 rounded-full flex items-center justify-center mx-auto mb-4">
                         <Star className="w-10 h-10 text-gray-400" />
@@ -266,6 +268,173 @@ export default function Reports() {
                       </p>
                       <p className="text-gray-500">
                         Mulai jual produk untuk melihat analisis terlaris
+                      </p>
+                    </div>
+                  )}
+                </div>
+              )}
+            </CardContent>
+          </Card>
+        </div>
+
+        {/* Enhanced HPP & BEP Analysis */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+          <Card className="group bg-white border-0 shadow-2xl hover:shadow-3xl transition-all duration-500 overflow-hidden">
+            <CardHeader className="bg-gradient-to-r from-orange-500 to-red-600 text-white relative overflow-hidden">
+              <div className="absolute top-0 right-0 w-32 h-32 bg-white/10 rounded-full -translate-y-16 translate-x-16 group-hover:scale-150 transition-transform duration-700"></div>
+              <div className="relative z-10 flex items-center space-x-4">
+                <div className="bg-white/20 backdrop-blur-sm p-4 rounded-2xl shadow-lg">
+                  <Calculator className="w-8 h-8 text-white" />
+                </div>
+                <div>
+                  <CardTitle className="text-2xl font-bold drop-shadow-sm">
+                    🧮 HPP Analysis
+                  </CardTitle>
+                  <p className="text-white/90 font-medium">Harga Pokok Penjualan</p>
+                </div>
+              </div>
+            </CardHeader>
+            <CardContent className="p-8 bg-gradient-to-br from-gray-50 to-white">
+              {loadingHpp ? (
+                <div className="space-y-4">
+                  {[1, 2].map((i) => (
+                    <div key={i} className="animate-pulse bg-gradient-to-r from-gray-100 to-gray-200 rounded-2xl p-6">
+                      <div className="h-5 bg-gray-300 rounded w-3/4 mb-3"></div>
+                      <div className="h-4 bg-gray-300 rounded w-full mb-2"></div>
+                      <div className="h-4 bg-gray-300 rounded w-1/2"></div>
+                    </div>
+                  ))}
+                </div>
+              ) : (
+                <div className="space-y-4">
+                  {Array.isArray(hpp) && hpp.map((item: any, index: number) => (
+                    <div key={index} className="group/hpp relative overflow-hidden bg-gradient-to-br from-orange-50 via-amber-50 to-yellow-50 rounded-2xl p-6 border border-orange-200 hover:shadow-xl transition-all duration-300">
+                      <div className="absolute top-0 right-0 w-16 h-16 bg-orange-200/20 rounded-full -translate-y-8 translate-x-8 group-hover/hpp:scale-150 transition-transform duration-500"></div>
+                      <div className="relative z-10">
+                        <div className="flex items-center justify-between mb-4">
+                          <h4 className="font-bold text-gray-900 text-lg flex items-center space-x-2">
+                            <span>🏭</span>
+                            <span>{item.productName}</span>
+                          </h4>
+                          <Badge className="bg-orange-100 text-orange-800 font-semibold">
+                            HPP
+                          </Badge>
+                        </div>
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
+                          <div className="space-y-2">
+                            <p className="text-gray-600 flex items-center space-x-2">
+                              <span>💰</span>
+                              <span>Biaya Bahan: {formatCurrency(item.totalMaterialCost)}</span>
+                            </p>
+                            <p className="text-gray-600 flex items-center space-x-2">
+                              <span>📦</span>
+                              <span>Total Produksi: {item.totalProduction} buah</span>
+                            </p>
+                          </div>
+                          <div className="bg-white rounded-xl p-4 shadow-lg">
+                            <p className="text-orange-600 font-semibold mb-1">HPP per Unit</p>
+                            <p className="text-2xl font-bold text-orange-800">
+                              {formatCurrency(item.hppPerUnit)}
+                            </p>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                  {!Array.isArray(hpp) || !hpp.length && (
+                    <div className="text-center py-12">
+                      <div className="w-20 h-20 bg-gradient-to-br from-gray-100 to-gray-200 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <Calculator className="w-10 h-10 text-gray-400" />
+                      </div>
+                      <p className="text-xl font-semibold text-gray-700 mb-2">
+                        📊 Belum Ada Data HPP
+                      </p>
+                      <p className="text-gray-500">
+                        Mulai produksi untuk analisis HPP
+                      </p>
+                    </div>
+                  )}
+                </div>
+              )}
+            </CardContent>
+          </Card>
+
+          <Card className="group bg-white border-0 shadow-2xl hover:shadow-3xl transition-all duration-500 overflow-hidden">
+            <CardHeader className="bg-gradient-to-r from-teal-500 to-cyan-600 text-white relative overflow-hidden">
+              <div className="absolute top-0 right-0 w-32 h-32 bg-white/10 rounded-full -translate-y-16 translate-x-16 group-hover:scale-150 transition-transform duration-700"></div>
+              <div className="relative z-10 flex items-center space-x-4">
+                <div className="bg-white/20 backdrop-blur-sm p-4 rounded-2xl shadow-lg">
+                  <Target className="w-8 h-8 text-white" />
+                </div>
+                <div>
+                  <CardTitle className="text-2xl font-bold drop-shadow-sm">
+                    🎯 BEP Analysis
+                  </CardTitle>
+                  <p className="text-white/90 font-medium">Break Even Point</p>
+                </div>
+              </div>
+            </CardHeader>
+            <CardContent className="p-8 bg-gradient-to-br from-gray-50 to-white">
+              {loadingBep ? (
+                <div className="space-y-4">
+                  {[1, 2].map((i) => (
+                    <div key={i} className="animate-pulse bg-gradient-to-r from-gray-100 to-gray-200 rounded-2xl p-6">
+                      <div className="h-5 bg-gray-300 rounded w-3/4 mb-3"></div>
+                      <div className="h-4 bg-gray-300 rounded w-full mb-2"></div>
+                      <div className="h-4 bg-gray-300 rounded w-1/2"></div>
+                    </div>
+                  ))}
+                </div>
+              ) : (
+                <div className="space-y-4">
+                  {Array.isArray(bep) && bep.map((item: any, index: number) => (
+                    <div key={index} className="group/bep relative overflow-hidden bg-gradient-to-br from-teal-50 via-cyan-50 to-blue-50 rounded-2xl p-6 border border-teal-200 hover:shadow-xl transition-all duration-300">
+                      <div className="absolute top-0 right-0 w-16 h-16 bg-teal-200/20 rounded-full -translate-y-8 translate-x-8 group-hover/bep:scale-150 transition-transform duration-500"></div>
+                      <div className="relative z-10">
+                        <div className="flex items-center justify-between mb-4">
+                          <h4 className="font-bold text-gray-900 text-lg flex items-center space-x-2">
+                            <span>🎯</span>
+                            <span>{item.productName}</span>
+                          </h4>
+                          <Badge className="bg-teal-100 text-teal-800 font-semibold">
+                            BEP
+                          </Badge>
+                        </div>
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
+                          <div className="space-y-2">
+                            <p className="text-gray-600 flex items-center space-x-2">
+                              <span>🏠</span>
+                              <span>Biaya Tetap: {formatCurrency(item.fixedCost)}</span>
+                            </p>
+                            <p className="text-gray-600 flex items-center space-x-2">
+                              <span>💰</span>
+                              <span>Harga Jual: {formatCurrency(item.sellingPrice)}</span>
+                            </p>
+                            <p className="text-gray-600 flex items-center space-x-2">
+                              <span>📊</span>
+                              <span>Biaya Variabel: {formatCurrency(item.variableCost)}</span>
+                            </p>
+                          </div>
+                          <div className="bg-white rounded-xl p-4 shadow-lg">
+                            <p className="text-teal-600 font-semibold mb-1">BEP Target</p>
+                            <p className="text-2xl font-bold text-teal-800">
+                              {item.bepQuantity} buah
+                            </p>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                  {!Array.isArray(bep) || !bep.length && (
+                    <div className="text-center py-12">
+                      <div className="w-20 h-20 bg-gradient-to-br from-gray-100 to-gray-200 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <Target className="w-10 h-10 text-gray-400" />
+                      </div>
+                      <p className="text-xl font-semibold text-gray-700 mb-2">
+                        🎯 Belum Ada Data BEP
+                      </p>
+                      <p className="text-gray-500">
+                        Data produksi diperlukan untuk analisis BEP
                       </p>
                     </div>
                   )}
@@ -334,248 +503,6 @@ export default function Reports() {
             </div>
           </CardContent>
         </Card>
-
-        {/* Enhanced HPP and BEP Analysis */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-          {/* HPP Analysis Card */}
-          <Card className="group bg-white border-0 shadow-2xl hover:shadow-3xl transition-all duration-500 overflow-hidden">
-            <CardHeader className="bg-gradient-to-r from-amber-500 to-orange-600 text-white relative overflow-hidden">
-              <div className="absolute top-0 right-0 w-32 h-32 bg-white/10 rounded-full -translate-y-16 translate-x-16 group-hover:scale-150 transition-transform duration-700"></div>
-              <div className="relative z-10 flex items-center space-x-4">
-                <div className="bg-white/20 backdrop-blur-sm p-4 rounded-2xl shadow-lg">
-                  <Calculator className="w-8 h-8 text-white" />
-                </div>
-                <div>
-                  <CardTitle className="text-2xl font-bold drop-shadow-sm">
-                    🧮 Analisis HPP
-                  </CardTitle>
-                  <p className="text-white/90 font-medium">Harga Pokok Penjualan per produk</p>
-                </div>
-              </div>
-            </CardHeader>
-            <CardContent className="p-8 bg-gradient-to-br from-gray-50 to-white">
-              {loadingHpp ? (
-                <div className="space-y-4">
-                  {[1, 2, 3].map((i) => (
-                    <div key={i} className="animate-pulse p-6 bg-gradient-to-r from-gray-100 to-gray-200 rounded-2xl">
-                      <div className="h-5 bg-gray-300 rounded w-3/4 mb-3"></div>
-                      <div className="h-4 bg-gray-300 rounded w-1/2"></div>
-                    </div>
-                  ))}
-                </div>
-              ) : (
-                <div className="space-y-4">
-                  {Array.isArray(hpp) && hpp.length > 0 ? hpp.map((item: any, index: number) => (
-                    <div key={index} className="group/hpp relative overflow-hidden bg-gradient-to-br from-amber-50 via-orange-50 to-yellow-50 rounded-2xl p-6 border border-amber-200 hover:shadow-xl transition-all duration-300">
-                      <div className="absolute top-0 right-0 w-20 h-20 bg-amber-200/20 rounded-full -translate-y-10 translate-x-10 group-hover/hpp:scale-150 transition-transform duration-500"></div>
-                      <div className="relative z-10">
-                        <div className="flex items-center justify-between mb-4">
-                          <div className="flex items-center space-x-3">
-                            <div className="bg-gradient-to-br from-amber-500 to-orange-600 text-white w-10 h-10 rounded-xl flex items-center justify-center font-bold shadow-lg">
-                              🏷️
-                            </div>
-                            <h4 className="font-bold text-gray-900 text-lg">{item.productName}</h4>
-                          </div>
-                          <Badge className="bg-amber-100 text-amber-800 font-semibold px-3 py-1">
-                            HPP Analysis
-                          </Badge>
-                        </div>
-                        
-                        <div className="grid grid-cols-2 gap-4">
-                          <div className="bg-white/60 backdrop-blur-sm rounded-xl p-4 border border-amber-200/50">
-                            <p className="text-amber-700 font-semibold text-sm mb-1">
-                              💰 Biaya Produksi
-                            </p>
-                            <p className="text-2xl font-bold text-amber-800">
-                              {formatCurrency(item.productionCost)}
-                            </p>
-                          </div>
-                          <div className="bg-white/60 backdrop-blur-sm rounded-xl p-4 border border-amber-200/50">
-                            <p className="text-orange-700 font-semibold text-sm mb-1">
-                              📊 HPP per Unit
-                            </p>
-                            <p className="text-2xl font-bold text-orange-800">
-                              {formatCurrency(item.hpp)}
-                            </p>
-                          </div>
-                        </div>
-                        
-                        <div className="mt-4 bg-gradient-to-r from-amber-100 to-orange-100 rounded-xl p-4 border border-amber-200">
-                          <p className="text-amber-700 font-semibold text-sm mb-2">
-                            📈 Margin Profit Recommended
-                          </p>
-                          <div className="flex items-center justify-between">
-                            <span className="text-gray-700">Harga Jual Minimal:</span>
-                            <span className="text-xl font-bold text-green-600">
-                              {formatCurrency(item.hpp * 1.3)} {/* 30% margin */}
-                            </span>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  )) : (
-                    <div className="text-center py-12">
-                      <div className="w-20 h-20 bg-gradient-to-br from-amber-100 to-orange-200 rounded-full flex items-center justify-center mx-auto mb-4">
-                        <Calculator className="w-10 h-10 text-amber-500" />
-                      </div>
-                      <p className="text-xl font-semibold text-gray-700 mb-2">
-                        🧮 Belum Ada Data HPP
-                      </p>
-                      <p className="text-gray-500">
-                        Mulai input biaya produksi untuk analisis HPP
-                      </p>
-                    </div>
-                  )}
-                </div>
-              )}
-            </CardContent>
-          </Card>
-
-          {/* BEP Analysis Card */}
-          <Card className="group bg-white border-0 shadow-2xl hover:shadow-3xl transition-all duration-500 overflow-hidden">
-            <CardHeader className="bg-gradient-to-r from-cyan-500 to-teal-600 text-white relative overflow-hidden">
-              <div className="absolute top-0 right-0 w-32 h-32 bg-white/10 rounded-full -translate-y-16 translate-x-16 group-hover:scale-150 transition-transform duration-700"></div>
-              <div className="relative z-10 flex items-center space-x-4">
-                <div className="bg-white/20 backdrop-blur-sm p-4 rounded-2xl shadow-lg">
-                  <Target className="w-8 h-8 text-white" />
-                </div>
-                <div>
-                  <CardTitle className="text-2xl font-bold drop-shadow-sm">
-                    🎯 Analisis BEP
-                  </CardTitle>
-                  <p className="text-white/90 font-medium">Break Even Point per produk</p>
-                </div>
-              </div>
-            </CardHeader>
-            <CardContent className="p-8 bg-gradient-to-br from-gray-50 to-white">
-              {loadingBep ? (
-                <div className="space-y-4">
-                  {[1, 2, 3].map((i) => (
-                    <div key={i} className="animate-pulse p-6 bg-gradient-to-r from-gray-100 to-gray-200 rounded-2xl">
-                      <div className="h-5 bg-gray-300 rounded w-3/4 mb-3"></div>
-                      <div className="h-4 bg-gray-300 rounded w-1/2"></div>
-                    </div>
-                  ))}
-                </div>
-              ) : (
-                <div className="space-y-4">
-                  {Array.isArray(bep) && bep.length > 0 ? bep.map((item: any, index: number) => (
-                    <div key={index} className="group/bep relative overflow-hidden bg-gradient-to-br from-cyan-50 via-teal-50 to-blue-50 rounded-2xl p-6 border border-cyan-200 hover:shadow-xl transition-all duration-300">
-                      <div className="absolute top-0 right-0 w-20 h-20 bg-cyan-200/20 rounded-full -translate-y-10 translate-x-10 group-hover/bep:scale-150 transition-transform duration-500"></div>
-                      <div className="relative z-10">
-                        <div className="flex items-center justify-between mb-4">
-                          <div className="flex items-center space-x-3">
-                            <div className="bg-gradient-to-br from-cyan-500 to-teal-600 text-white w-10 h-10 rounded-xl flex items-center justify-center font-bold shadow-lg">
-                              🎯
-                            </div>
-                            <h4 className="font-bold text-gray-900 text-lg">{item.productName}</h4>
-                          </div>
-                          <Badge className="bg-cyan-100 text-cyan-800 font-semibold px-3 py-1">
-                            BEP Analysis
-                          </Badge>
-                        </div>
-                        
-                        <div className="grid grid-cols-2 gap-4">
-                          <div className="bg-white/60 backdrop-blur-sm rounded-xl p-4 border border-cyan-200/50">
-                            <p className="text-cyan-700 font-semibold text-sm mb-1">
-                              🏭 Fixed Cost
-                            </p>
-                            <p className="text-2xl font-bold text-cyan-800">
-                              {formatCurrency(item.fixedCost)}
-                            </p>
-                          </div>
-                          <div className="bg-white/60 backdrop-blur-sm rounded-xl p-4 border border-cyan-200/50">
-                            <p className="text-teal-700 font-semibold text-sm mb-1">
-                              📦 Variable Cost/Unit
-                            </p>
-                            <p className="text-2xl font-bold text-teal-800">
-                              {formatCurrency(item.variableCost)}
-                            </p>
-                          </div>
-                        </div>
-                        
-                        <div className="mt-4 bg-gradient-to-r from-cyan-100 to-teal-100 rounded-xl p-4 border border-cyan-200">
-                          <p className="text-cyan-700 font-semibold text-sm mb-2">
-                            🎯 Break Even Point
-                          </p>
-                          <div className="space-y-2">
-                            <div className="flex items-center justify-between">
-                              <span className="text-gray-700">Unit yang harus dijual:</span>
-                              <span className="text-xl font-bold text-blue-600">
-                                {item.bepUnit} unit
-                              </span>
-                            </div>
-                            <div className="flex items-center justify-between">
-                              <span className="text-gray-700">Revenue yang dibutuhkan:</span>
-                              <span className="text-xl font-bold text-green-600">
-                                {formatCurrency(item.bepRevenue)}
-                              </span>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  )) : (
-                    <div className="text-center py-12">
-                      <div className="w-20 h-20 bg-gradient-to-br from-cyan-100 to-teal-200 rounded-full flex items-center justify-center mx-auto mb-4">
-                        <Target className="w-10 h-10 text-cyan-500" />
-                      </div>
-                      <p className="text-xl font-semibold text-gray-700 mb-2">
-                        🎯 Belum Ada Data BEP
-                      </p>
-                      <p className="text-gray-500">
-                        Input fixed cost dan variable cost untuk analisis BEP
-                      </p>
-                    </div>
-                  )}
-                </div>
-              )}
-            </CardContent>
-          </Card>
-        </div>
-
-        {/* Enhanced Action Buttons */}
-        <div className="text-center space-y-6">
-          <div className="flex justify-center space-x-6">
-            <Button size="lg" className="bg-gradient-to-r from-blue-500 to-indigo-600 hover:from-blue-600 hover:to-indigo-700 text-white px-8 py-4 rounded-2xl shadow-xl hover:shadow-2xl transition-all duration-300 font-semibold text-lg">
-              <Download className="w-6 h-6 mr-3" />
-              📄 Export PDF
-            </Button>
-            <Button size="lg" variant="outline" className="border-2 border-purple-500 text-purple-600 hover:bg-purple-50 px-8 py-4 rounded-2xl shadow-xl hover:shadow-2xl transition-all duration-300 font-semibold text-lg">
-              <Calendar className="w-6 h-6 mr-3" />
-              📅 Pilih Periode
-            </Button>
-          </div>
-          
-          <div className="bg-gradient-to-r from-indigo-50 via-purple-50 to-pink-50 rounded-3xl p-8 border-2 border-purple-200">
-            <h3 className="text-2xl font-bold text-gray-800 mb-4">
-              💡 Tips Optimasi Bisnis
-            </h3>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-              <div className="bg-white/60 backdrop-blur-sm rounded-2xl p-6 border border-purple-200/50">
-                <div className="text-3xl mb-3">📊</div>
-                <h4 className="font-bold text-gray-800 mb-2">Monitor HPP</h4>
-                <p className="text-gray-600 text-sm">
-                  Pantau harga pokok penjualan untuk mengoptimalkan margin profit
-                </p>
-              </div>
-              <div className="bg-white/60 backdrop-blur-sm rounded-2xl p-6 border border-purple-200/50">
-                <div className="text-3xl mb-3">🎯</div>
-                <h4 className="font-bold text-gray-800 mb-2">Capai BEP</h4>
-                <p className="text-gray-600 text-sm">
-                  Fokus mencapai break even point untuk memastikan profitabilitas
-                </p>
-              </div>
-              <div className="bg-white/60 backdrop-blur-sm rounded-2xl p-6 border border-purple-200/50">
-                <div className="text-3xl mb-3">🚀</div>
-                <h4 className="font-bold text-gray-800 mb-2">Scale Up</h4>
-                <p className="text-gray-600 text-sm">
-                  Kembangkan produk terlaris untuk meningkatkan revenue
-                </p>
-              </div>
-            </div>
-          </div>
-        </div>
       </div>
     </div>
   );

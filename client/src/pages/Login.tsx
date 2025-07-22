@@ -132,11 +132,6 @@ export default function Login() {
       title: "Data Aman",
       description: "Informasi bisnis Anda terlindungi"
     },
-    {
-      icon: <Users className="w-5 h-5" />,
-      title: "Untuk UMKM",
-      description: "Dibuat khusus untuk usaha kecil"
-    }
   ];
 
   return (
@@ -180,13 +175,6 @@ export default function Login() {
                   </div>
                 </div>
               ))}
-            </div>
-
-            <div className="mt-8 p-4 bg-white/60 backdrop-blur-sm rounded-xl border border-white/20">
-              <div className="flex items-center text-sm text-gray-600">
-                <CheckCircle className="w-4 h-4 text-success mr-2" />
-                <span>Trusted by 1000+ UMKM across Indonesia</span>
-              </div>
             </div>
           </div>
         </div>
