@@ -1,6 +1,6 @@
-# BisnisCatat Client
+# Bisnisku Client
 
-React frontend for the BisnisCatat business record-keeping application.
+React frontend for the Bisnisku business record-keeping application.
 
 ## Development
 

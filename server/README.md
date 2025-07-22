@@ -1,6 +1,6 @@
-# BisnisCatat Server
+# Bisnisku Server
 
-Express.js backend API for the BisnisCatat business record-keeping application.
+Express.js backend API for the Bisnisku business record-keeping application.
 
 ## Development
 

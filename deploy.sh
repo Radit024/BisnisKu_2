@@ -1,8 +1,8 @@
 #!/bin/bash
 
-# BisnisCatat Deployment Script
+# Bisnisku Deployment Script
 
-echo "🚀 Starting BisnisCatat deployment..."
+echo "🚀 Starting Bisnisku deployment..."
 
 # Install dependencies
 echo "📦 Installing dependencies..."

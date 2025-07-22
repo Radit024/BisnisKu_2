@@ -1,8 +1,8 @@
-# BisnisCatat - Business Record Keeping System
+# Bisnisku - Business Record Keeping System
 
 ## Overview
 
-BisnisCatat is a comprehensive business record-keeping application designed for beginner users, particularly home-based MSME (Micro, Small, and Medium Enterprise) owners. The system provides an intuitive interface for managing transactions, production records, stock inventory, and generating business reports with calculations for HPP (Cost of Production) and BEP (Break Even Point). All monetary values are displayed in Indonesian Rupiah (IDR) format.
+Bisnisku is a comprehensive business record-keeping application designed for beginner users, particularly home-based MSME (Micro, Small, and Medium Enterprise) owners. The system provides an intuitive interface for managing transactions, production records, stock inventory, and generating business reports with calculations for HPP (Cost of Production) and BEP (Break Even Point). All monetary values are displayed in Indonesian Rupiah (IDR) format.
 
 ## User Preferences
 

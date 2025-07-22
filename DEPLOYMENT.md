@@ -1,11 +1,11 @@
-# Deployment Guide for BisnisCatat
+# Deployment Guide for Bisnisku
 
-This guide explains how to deploy the BisnisCatat application using serverless architecture with separate client and server deployments.
+This guide explains how to deploy the Bisnisku application using serverless architecture with separate client and server deployments.
 
 ## Project Structure
 
 ```
-bisniscatat/
+Bisnisku/
 ├── client/          # React frontend
 │   ├── src/
 │   ├── package.json
