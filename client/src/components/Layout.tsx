@@ -42,29 +42,34 @@ export default function Layout({ children }: LayoutProps) {
   return (
     <div className="min-h-screen bg-bg-main">
       {/* Header */}
-      <header className="bg-white shadow-sm border-b border-gray-200 sticky top-0 z-50">
+      <header className="bg-gradient-to-r from-blue-600 to-indigo-700 shadow-lg sticky top-0 z-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           {/* Top Bar */}
           <div className="flex justify-between items-center h-16">
             <div className="flex items-center space-x-3">
-              <div className="bg-primary text-white rounded-lg w-10 h-10 flex items-center justify-center">
-                <Calculator className="w-5 h-5" />
+              <div className="bg-white/20 backdrop-blur-sm text-white rounded-xl w-12 h-12 flex items-center justify-center shadow-lg">
+                <Calculator className="w-6 h-6" />
               </div>
-              <h1 className="text-xl font-bold text-text-main">Bisnisku</h1>
+              <div>
+                <h1 className="text-2xl font-bold text-white">BisnisKu</h1>
+              </div>
             </div>
             
-            <div className="flex items-center space-x-3">
-              <span className="hidden md:block text-sm text-gray-600">
-                Halo, <span className="font-medium text-text-main">{user?.displayName || user?.email?.split('@')[0] || 'User'}</span>
-              </span>
-              <Button variant="outline" size="sm" className="hidden sm:flex">
+            <div className="flex items-center space-x-4">
+              <div className="hidden md:flex items-center space-x-2 bg-white/10 backdrop-blur-sm rounded-lg px-3 py-2">
+                <User className="w-4 h-4 text-white" />
+                <span className="text-sm text-white">
+                  {user?.displayName || user?.email?.split('@')[0] || 'User'}
+                </span>
+              </div>
+              <Button variant="outline" size="sm" className="hidden sm:flex bg-white/10 border-white/20 text-white hover:bg-white/20">
                 <Download className="w-4 h-4 mr-2" />
                 Backup
               </Button>
               <Button
                 variant="outline"
                 size="icon"
-                className="text-red-600 hover:bg-red-50"
+                className="bg-red-500/20 border-red-400/30 text-red-100 hover:bg-red-500/30 hover:border-red-400/50"
                 onClick={handleLogout}
                 title="Logout"
               >
@@ -74,7 +79,7 @@ export default function Layout({ children }: LayoutProps) {
           </div>
 
           {/* Navigation Menu */}
-          <div className="border-t border-gray-100">
+          <div className="border-t border-white/20">
             <div className="flex overflow-x-auto scrollbar-hide">
               {navItems.map((item) => {
                 const Icon = item.icon;
@@ -83,14 +88,14 @@ export default function Layout({ children }: LayoutProps) {
                 return (
                   <Link key={item.path} href={item.path}>
                     <a
-                      className={`flex items-center space-x-2 px-4 py-3 text-sm font-medium whitespace-nowrap border-b-2 transition-colors duration-200 ${
+                      className={`flex items-center space-x-2 px-6 py-4 text-sm font-medium whitespace-nowrap border-b-2 transition-all duration-300 ${
                         isActive
-                          ? 'border-primary text-primary bg-primary/5'
-                          : 'border-transparent text-gray-600 hover:text-primary hover:border-primary/30'
+                          ? 'border-white text-white bg-white/20 shadow-lg'
+                          : 'border-transparent text-blue-100 hover:text-white hover:border-white/50 hover:bg-white/10'
                       }`}
                     >
-                      <Icon className="w-4 h-4" />
-                      <span>{item.label}</span>
+                      <Icon className="w-5 h-5" />
+                      <span className="font-semibold">{item.label}</span>
                     </a>
                   </Link>
                 );

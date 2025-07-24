@@ -95,15 +95,15 @@ export default function ProductionForm() {
   };
 
   return (
-    <Card className="overflow-hidden border-0 shadow-xl bg-gradient-to-br from-white to-orange-50">
-      <CardHeader className="bg-gradient-to-r from-orange-600 to-red-600 text-white pb-6">
+    <Card className="overflow-hidden border-0 shadow-xl bg-gradient-to-br from-white to-blue-50">
+      <CardHeader className="bg-gradient-to-r from-blue-600 to-indigo-700 text-white pb-6">
         <CardTitle className="text-xl font-bold flex items-center">
           <div className="bg-white/20 p-2 rounded-lg mr-3">
             <Factory className="w-6 h-6" />
           </div>
           <div>
             <span className="block">Produksi Baru</span>
-            <span className="text-sm font-normal text-orange-100 block">Catat proses pembuatan produk</span>
+            <span className="text-sm font-normal text-blue-100 block">Catat proses pembuatan produk</span>
           </div>
         </CardTitle>
       </CardHeader>
@@ -121,7 +121,7 @@ export default function ProductionForm() {
                 id="date"
                 type="date"
                 {...form.register('date')}
-                className="px-4 py-3 border-2 border-gray-200 rounded-xl focus:border-orange-500 focus:ring-2 focus:ring-orange-100 transition-all"
+                className="px-4 py-3 border-2 border-gray-200 rounded-xl focus:border-blue-500 focus:ring-2 focus:ring-blue-100 transition-all"
               />
               {form.formState.errors.date && (
                 <p className="text-red-500 text-sm flex items-center">
@@ -142,7 +142,7 @@ export default function ProductionForm() {
                   type="number"
                   placeholder="10"
                   {...form.register('quantity')}
-                  className="px-4 py-3 border-2 border-gray-200 rounded-xl focus:border-orange-500 focus:ring-2 focus:ring-orange-100 transition-all font-semibold text-lg"
+                  className="px-4 py-3 border-2 border-gray-200 rounded-xl focus:border-blue-500 focus:ring-2 focus:ring-blue-100 transition-all font-semibold text-lg"
                 />
                 <span className="absolute right-4 top-1/2 transform -translate-y-1/2 text-gray-500 text-sm">
                   Unit
@@ -167,7 +167,7 @@ export default function ProductionForm() {
               id="productName"
               placeholder="Contoh: Roti Tawar, Kue Bolu, Martabak Manis..."
               {...form.register('productName')}
-              className="px-4 py-3 border-2 border-gray-200 rounded-xl focus:border-orange-500 focus:ring-2 focus:ring-orange-100 transition-all"
+              className="px-4 py-3 border-2 border-gray-200 rounded-xl focus:border-blue-500 focus:ring-2 focus:ring-blue-100 transition-all"
             />
             {form.formState.errors.productName && (
               <p className="text-red-500 text-sm flex items-center">
@@ -184,17 +184,17 @@ export default function ProductionForm() {
                 <FlaskConical className="w-4 h-4 mr-2 text-gray-500" />
                 Bahan yang Digunakan
               </Label>
-              <Badge className="bg-orange-100 text-orange-800 text-xs">
+              <Badge className="bg-blue-100 text-blue-800 text-xs">
                 {fields.length} Bahan
               </Badge>
             </div>
             
             <div className="space-y-3">
               {fields.map((field, index) => (
-                <div key={field.id} className="p-4 bg-gray-50 rounded-xl border border-gray-200 hover:border-orange-200 transition-colors">
+                <div key={field.id} className="p-4 bg-gray-50 rounded-xl border border-gray-200 hover:border-blue-200 transition-colors">
                   <div className="flex items-center space-x-2 mb-2">
-                    <div className="bg-orange-100 p-1 rounded-lg">
-                      <Beaker className="w-4 h-4 text-orange-600" />
+                    <div className="bg-blue-100 p-1 rounded-lg">
+                      <Beaker className="w-4 h-4 text-blue-600" />
                     </div>
                     <span className="text-sm font-medium text-gray-700">Bahan #{index + 1}</span>
                     {fields.length > 1 && (
@@ -215,7 +215,7 @@ export default function ProductionForm() {
                       <Input
                         placeholder="Nama bahan (contoh: Tepung terigu, Gula pasir...)"
                         {...form.register(`materials.${index}.materialName`)}
-                        className="border-2 border-gray-200 rounded-lg focus:border-orange-500 focus:ring-1 focus:ring-orange-100 transition-all"
+                        className="border-2 border-gray-200 rounded-lg focus:border-blue-500 focus:ring-1 focus:ring-blue-100 transition-all"
                       />
                     </div>
                     <div className="grid grid-cols-2 gap-2">
@@ -223,53 +223,53 @@ export default function ProductionForm() {
                         type="number"
                         placeholder="Jumlah"
                         {...form.register(`materials.${index}.quantity`)}
-                        className="border-2 border-gray-200 rounded-lg focus:border-orange-500 focus:ring-1 focus:ring-orange-100 transition-all"
+                        className="border-2 border-gray-200 rounded-lg focus:border-blue-500 focus:ring-1 focus:ring-blue-100 transition-all"
                       />
                       <Select
                         value={form.watch(`materials.${index}.unit`)}
                         onValueChange={(value) => form.setValue(`materials.${index}.unit`, value)}
                       >
-                        <SelectTrigger className="border-2 border-gray-200 rounded-lg focus:border-orange-500 focus:ring-1 focus:ring-orange-100 transition-all bg-white">
+                        <SelectTrigger className="border-2 border-gray-200 rounded-lg focus:border-blue-500 focus:ring-1 focus:ring-blue-100 transition-all bg-white">
                           <SelectValue placeholder="Unit" />
                         </SelectTrigger>
                         <SelectContent className="rounded-xl border-2 border-gray-200 bg-white shadow-xl">
-                          <SelectItem value="kg" className="rounded-lg py-2 hover:bg-orange-50">
+                          <SelectItem value="kg" className="rounded-lg py-2 hover:bg-blue-50">
                             <div className="flex items-center">
                               <span className="font-medium">kg</span>
                               <span className="text-xs text-gray-500 ml-2">Kilogram</span>
                             </div>
                           </SelectItem>
-                          <SelectItem value="g" className="rounded-lg py-2 hover:bg-orange-50">
+                          <SelectItem value="g" className="rounded-lg py-2 hover:bg-blue-50">
                             <div className="flex items-center">
                               <span className="font-medium">g</span>
                               <span className="text-xs text-gray-500 ml-2">Gram</span>
                             </div>
                           </SelectItem>
-                          <SelectItem value="l" className="rounded-lg py-2 hover:bg-orange-50">
+                          <SelectItem value="l" className="rounded-lg py-2 hover:bg-blue-50">
                             <div className="flex items-center">
                               <span className="font-medium">l</span>
                               <span className="text-xs text-gray-500 ml-2">Liter</span>
                             </div>
                           </SelectItem>
-                          <SelectItem value="ml" className="rounded-lg py-2 hover:bg-orange-50">
+                          <SelectItem value="ml" className="rounded-lg py-2 hover:bg-blue-50">
                             <div className="flex items-center">
                               <span className="font-medium">ml</span>
                               <span className="text-xs text-gray-500 ml-2">Mililiter</span>
                             </div>
                           </SelectItem>
-                          <SelectItem value="pcs" className="rounded-lg py-2 hover:bg-orange-50">
+                          <SelectItem value="pcs" className="rounded-lg py-2 hover:bg-blue-50">
                             <div className="flex items-center">
                               <span className="font-medium">pcs</span>
                               <span className="text-xs text-gray-500 ml-2">Pieces</span>
                             </div>
                           </SelectItem>
-                          <SelectItem value="sdm" className="rounded-lg py-2 hover:bg-orange-50">
+                          <SelectItem value="sdm" className="rounded-lg py-2 hover:bg-blue-50">
                             <div className="flex items-center">
                               <span className="font-medium">sdm</span>
                               <span className="text-xs text-gray-500 ml-2">Sendok Makan</span>
                             </div>
                           </SelectItem>
-                          <SelectItem value="sdt" className="rounded-lg py-2 hover:bg-orange-50">
+                          <SelectItem value="sdt" className="rounded-lg py-2 hover:bg-blue-50">
                             <div className="flex items-center">
                               <span className="font-medium">sdt</span>
                               <span className="text-xs text-gray-500 ml-2">Sendok Teh</span>
@@ -302,7 +302,7 @@ export default function ProductionForm() {
               type="button"
               variant="outline"
               onClick={() => append({ materialName: '', quantity: '', unit: '' })}
-              className="w-full border-2 border-dashed border-orange-300 text-orange-600 hover:bg-orange-50 hover:border-orange-400 transition-all py-3 rounded-xl"
+              className="w-full border-2 border-dashed border-blue-300 text-blue-600 hover:bg-blue-50 hover:border-blue-400 transition-all py-3 rounded-xl"
             >
               <Plus className="w-4 h-4 mr-2" />
               Tambah Bahan Lainnya
@@ -326,7 +326,7 @@ export default function ProductionForm() {
               id="notes"
               placeholder="Tambahkan catatan tentang proses produksi, kendala yang dihadapi, atau tips untuk batch selanjutnya..."
               {...form.register('notes')}
-              className="px-4 py-3 border-2 border-gray-200 rounded-xl focus:border-orange-500 focus:ring-2 focus:ring-orange-100 transition-all resize-none"
+              className="px-4 py-3 border-2 border-gray-200 rounded-xl focus:border-blue-500 focus:ring-2 focus:ring-blue-100 transition-all resize-none"
               rows={4}
             />
           </div>
@@ -334,7 +334,7 @@ export default function ProductionForm() {
           {/* Submit Button */}
           <Button 
             type="submit" 
-            className="w-full py-4 text-lg font-semibold rounded-xl transition-all duration-200 shadow-lg bg-gradient-to-r from-orange-600 to-red-600 hover:from-orange-700 hover:to-red-700 text-white hover:shadow-xl hover:scale-105 active:scale-95"
+            className="w-full py-4 text-lg font-semibold rounded-xl transition-all duration-200 shadow-lg bg-gradient-to-r from-blue-600 to-indigo-700 hover:from-blue-700 hover:to-indigo-800 text-white hover:shadow-xl hover:scale-105 active:scale-95"
             disabled={createProduction.isPending}
           >
             {createProduction.isPending ? (

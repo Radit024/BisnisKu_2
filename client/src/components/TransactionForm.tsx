@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
@@ -11,15 +10,11 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { 
   Save, 
   Plus, 
-  Calendar, 
-  DollarSign, 
-  FileText, 
   CreditCard, 
   Banknote, 
   Smartphone,
   TrendingUp,
-  TrendingDown,
-  Receipt
+  TrendingDown
 } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
@@ -76,7 +71,7 @@ export default function TransactionForm() {
       });
       queryClient.invalidateQueries({ queryKey: ['/api/transactions'] });
     },
-    onError: (error) => {
+    onError: () => {
       toast({
         title: 'Error',
         description: 'Gagal menyimpan transaksi',
@@ -106,15 +101,13 @@ export default function TransactionForm() {
   };
 
   return (
-    <Card className="overflow-hidden border-0 shadow-lg bg-gradient-to-br from-white to-gray-50">
-      <CardHeader className="bg-gradient-to-r from-blue-600 to-purple-600 text-white pb-6">
-        <CardTitle className="text-xl font-bold flex items-center">
-          <div className="bg-white/20 p-2 rounded-lg mr-3">
-            <Plus className="w-6 h-6" />
-          </div>
+    <Card className="border shadow-sm">
+      <CardHeader className="bg-gradient-to-r from-blue-600 to-indigo-700 text-white">
+        <CardTitle className="text-xl font-semibold flex items-center">
+          <Plus className="w-5 h-5 mr-2" />
           <div>
             <span className="block">Transaksi Baru</span>
-            <span className="text-sm font-normal text-blue-100 block">Catat pemasukan & pengeluaran bisnis</span>
+            <span className="text-sm font-normal text-blue-100">Catat pemasukan & pengeluaran bisnis</span>
           </div>
         </CardTitle>
       </CardHeader>
@@ -126,74 +119,59 @@ export default function TransactionForm() {
             <button
               type="button"
               onClick={() => form.setValue('type', 'income')}
-              className={`p-4 rounded-xl border-2 transition-all duration-200 ${
+              className={`p-3 rounded-lg border transition-colors ${
                 watchedType === 'income'
-                  ? 'border-green-500 bg-green-50 shadow-lg shadow-green-100'
-                  : 'border-gray-200 bg-white hover:border-green-300 hover:bg-green-50'
+                  ? 'border-green-500 bg-green-50 text-green-700'
+                  : 'border-gray-200 bg-white text-gray-600 hover:border-green-300 hover:bg-green-50'
               }`}
             >
               <div className="flex items-center justify-center space-x-2">
-                <TrendingUp className={`w-5 h-5 ${watchedType === 'income' ? 'text-green-600' : 'text-gray-400'}`} />
-                <span className={`font-semibold ${watchedType === 'income' ? 'text-green-700' : 'text-gray-600'}`}>
-                  Pemasukan
-                </span>
+                <TrendingUp className={`w-4 h-4 ${watchedType === 'income' ? 'text-green-600' : 'text-gray-400'}`} />
+                <span className="font-medium">Pemasukan</span>
               </div>
-              {watchedType === 'income' && (
-                <div className="w-2 h-2 bg-green-500 rounded-full mx-auto mt-2"></div>
-              )}
             </button>
             
             <button
               type="button"
               onClick={() => form.setValue('type', 'expense')}
-              className={`p-4 rounded-xl border-2 transition-all duration-200 ${
+              className={`p-3 rounded-lg border transition-colors ${
                 watchedType === 'expense'
-                  ? 'border-red-500 bg-red-50 shadow-lg shadow-red-100'
-                  : 'border-gray-200 bg-white hover:border-red-300 hover:bg-red-50'
+                  ? 'border-red-500 bg-red-50 text-red-700'
+                  : 'border-gray-200 bg-white text-gray-600 hover:border-red-300 hover:bg-red-50'
               }`}
             >
               <div className="flex items-center justify-center space-x-2">
-                <TrendingDown className={`w-5 h-5 ${watchedType === 'expense' ? 'text-red-600' : 'text-gray-400'}`} />
-                <span className={`font-semibold ${watchedType === 'expense' ? 'text-red-700' : 'text-gray-600'}`}>
-                  Pengeluaran
-                </span>
+                <TrendingDown className={`w-4 h-4 ${watchedType === 'expense' ? 'text-red-600' : 'text-gray-400'}`} />
+                <span className="font-medium">Pengeluaran</span>
               </div>
-              {watchedType === 'expense' && (
-                <div className="w-2 h-2 bg-red-500 rounded-full mx-auto mt-2"></div>
-              )}
             </button>
           </div>
 
           {/* Date and Amount Row */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div className="space-y-2">
-              <Label htmlFor="date" className="text-sm font-semibold text-gray-700 flex items-center">
-                <Calendar className="w-4 h-4 mr-2 text-gray-500" />
+              <Label htmlFor="date" className="text-sm font-medium text-gray-700">
                 Tanggal
               </Label>
-              <div className="relative">
-                <Input
-                  id="date"
-                  type="date"
-                  {...form.register('date')}
-                  className="pl-4 pr-4 py-3 border-2 border-gray-200 rounded-xl focus:border-blue-500 focus:ring-2 focus:ring-blue-100 transition-all"
-                />
-              </div>
+              <Input
+                id="date"
+                type="date"
+                {...form.register('date')}
+                className="border border-gray-300 rounded-md focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
+              />
               {form.formState.errors.date && (
-                <p className="text-red-500 text-sm flex items-center">
-                  <span className="w-1 h-1 bg-red-500 rounded-full mr-2"></span>
+                <p className="text-red-500 text-sm">
                   {form.formState.errors.date.message}
                 </p>
               )}
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="amount" className="text-sm font-semibold text-gray-700 flex items-center">
-                <DollarSign className="w-4 h-4 mr-2 text-gray-500" />
+              <Label htmlFor="amount" className="text-sm font-medium text-gray-700">
                 Jumlah (Rp)
               </Label>
               <div className="relative">
-                <span className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-500 font-semibold">
+                <span className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500">
                   Rp
                 </span>
                 <Input
@@ -201,12 +179,11 @@ export default function TransactionForm() {
                   type="number"
                   placeholder="0"
                   {...form.register('amount')}
-                  className="pl-12 pr-4 py-3 border-2 border-gray-200 rounded-xl focus:border-blue-500 focus:ring-2 focus:ring-blue-100 transition-all font-semibold text-lg"
+                  className="pl-10 border border-gray-300 rounded-md focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
                 />
               </div>
               {form.formState.errors.amount && (
-                <p className="text-red-500 text-sm flex items-center">
-                  <span className="w-1 h-1 bg-red-500 rounded-full mr-2"></span>
+                <p className="text-red-500 text-sm">
                   {form.formState.errors.amount.message}
                 </p>
               )}
@@ -215,19 +192,17 @@ export default function TransactionForm() {
 
           {/* Description */}
           <div className="space-y-2">
-            <Label htmlFor="description" className="text-sm font-semibold text-gray-700 flex items-center">
-              <FileText className="w-4 h-4 mr-2 text-gray-500" />
+            <Label htmlFor="description" className="text-sm font-medium text-gray-700">
               Deskripsi
             </Label>
             <Input
               id="description"
               placeholder="Contoh: Penjualan roti tawar, Pembelian bahan baku..."
               {...form.register('description')}
-              className="px-4 py-3 border-2 border-gray-200 rounded-xl focus:border-blue-500 focus:ring-2 focus:ring-blue-100 transition-all"
+              className="border border-gray-300 rounded-md focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
             />
             {form.formState.errors.description && (
-              <p className="text-red-500 text-sm flex items-center">
-                <span className="w-1 h-1 bg-red-500 rounded-full mr-2"></span>
+              <p className="text-red-500 text-sm">
                 {form.formState.errors.description.message}
               </p>
             )}
@@ -235,46 +210,36 @@ export default function TransactionForm() {
 
           {/* Payment Method */}
           <div className="space-y-2">
-            <Label htmlFor="paymentMethod" className="text-sm font-semibold text-gray-700 flex items-center">
-              <CreditCard className="w-4 h-4 mr-2 text-gray-500" />
+            <Label htmlFor="paymentMethod" className="text-sm font-medium text-gray-700">
               Metode Pembayaran
             </Label>
             <Select
               value={form.watch('paymentMethod')}
               onValueChange={(value) => form.setValue('paymentMethod', value)}
             >
-              <SelectTrigger className="px-4 py-3 border-2 border-gray-200 rounded-xl focus:border-blue-500 focus:ring-2 focus:ring-blue-100 transition-all h-auto bg-white">
+              <SelectTrigger className="border border-gray-300 rounded-md focus:border-blue-500 focus:ring-1 focus:ring-blue-500">
                 <div className="flex items-center">
                   {watchedPaymentMethod && getPaymentMethodIcon(watchedPaymentMethod)}
                   <SelectValue placeholder="Pilih metode pembayaran" className="ml-2" />
                 </div>
               </SelectTrigger>
-              <SelectContent className="rounded-xl border-2 border-gray-200 bg-white shadow-xl backdrop-blur-none">
-                <SelectItem value="cash" className="rounded-lg py-3 hover:bg-green-50 focus:bg-green-50 bg-white">
-                  <div className="flex items-center space-x-3">
+              <SelectContent className="border border-gray-300 rounded-md shadow-lg">
+                <SelectItem value="cash" className="hover:bg-gray-50">
+                  <div className="flex items-center space-x-2">
                     <Banknote className="w-4 h-4 text-green-600" />
-                    <div>
-                      <span className="font-medium text-gray-900">Tunai</span>
-                      <span className="text-xs text-gray-600 block">Cash payment</span>
-                    </div>
+                    <span>Tunai</span>
                   </div>
                 </SelectItem>
-                <SelectItem value="bank_transfer" className="rounded-lg py-3 hover:bg-blue-50 focus:bg-blue-50 bg-white">
-                  <div className="flex items-center space-x-3">
+                <SelectItem value="bank_transfer" className="hover:bg-gray-50">
+                  <div className="flex items-center space-x-2">
                     <CreditCard className="w-4 h-4 text-blue-600" />
-                    <div>
-                      <span className="font-medium text-gray-900">Transfer Bank</span>
-                      <span className="text-xs text-gray-600 block">Bank transfer</span>
-                    </div>
+                    <span>Transfer Bank</span>
                   </div>
                 </SelectItem>
-                <SelectItem value="e_wallet" className="rounded-lg py-3 hover:bg-purple-50 focus:bg-purple-50 bg-white">
-                  <div className="flex items-center space-x-3">
+                <SelectItem value="e_wallet" className="hover:bg-gray-50">
+                  <div className="flex items-center space-x-2">
                     <Smartphone className="w-4 h-4 text-purple-600" />
-                    <div>
-                      <span className="font-medium text-gray-900">E-wallet</span>
-                      <span className="text-xs text-gray-600 block">Digital wallet</span>
-                    </div>
+                    <span>E-wallet</span>
                   </div>
                 </SelectItem>
               </SelectContent>
@@ -283,15 +248,14 @@ export default function TransactionForm() {
 
           {/* Notes */}
           <div className="space-y-2">
-            <Label htmlFor="notes" className="text-sm font-semibold text-gray-700 flex items-center">
-              <Receipt className="w-4 h-4 mr-2 text-gray-500" />
+            <Label htmlFor="notes" className="text-sm font-medium text-gray-700">
               Catatan (Opsional)
             </Label>
             <Textarea
               id="notes"
               placeholder="Tambahkan catatan tambahan untuk transaksi ini..."
               {...form.register('notes')}
-              className="px-4 py-3 border-2 border-gray-200 rounded-xl focus:border-blue-500 focus:ring-2 focus:ring-blue-100 transition-all resize-none"
+              className="border border-gray-300 rounded-md focus:border-blue-500 focus:ring-1 focus:ring-blue-500 resize-none"
               rows={3}
             />
           </div>
@@ -299,21 +263,21 @@ export default function TransactionForm() {
           {/* Submit Button */}
           <Button 
             type="submit" 
-            className={`w-full py-4 text-lg font-semibold rounded-xl transition-all duration-200 shadow-lg ${
+            className={`w-full font-medium transition-colors ${
               watchedType === 'income'
-                ? 'bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700 shadow-green-200'
-                : 'bg-gradient-to-r from-red-600 to-rose-600 hover:from-red-700 hover:to-rose-700 shadow-red-200'
-            } text-white hover:shadow-xl hover:scale-105 active:scale-95`}
+                ? 'bg-green-600 hover:bg-green-700 text-white'
+                : 'bg-red-600 hover:bg-red-700 text-white'
+            }`}
             disabled={createTransaction.isPending}
           >
             {createTransaction.isPending ? (
               <div className="flex items-center justify-center space-x-2">
-                <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+                <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
                 <span>Menyimpan...</span>
               </div>
             ) : (
               <div className="flex items-center justify-center space-x-2">
-                <Save className="w-5 h-5" />
+                <Save className="w-4 h-4" />
                 <span>
                   {watchedType === 'income' ? 'Simpan Pemasukan' : 'Simpan Pengeluaran'}
                 </span>
