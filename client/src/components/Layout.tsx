@@ -55,7 +55,6 @@ export default function Layout({ children }: LayoutProps) {
               </div>
               <div>
                 <h1 className="text-2xl font-bold text-white">BisnisKu</h1>
-                <p className="text-blue-100 text-xs">Business Management</p>
               </div>
             </div>
             
