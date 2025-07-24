@@ -1,7 +1,6 @@
 import { ReactNode } from 'react';
 import { Link, useLocation } from 'wouter';
 import { 
-  Calculator, 
   Download, 
   User,
   Gauge, 
@@ -47,11 +46,16 @@ export default function Layout({ children }: LayoutProps) {
           {/* Top Bar */}
           <div className="flex justify-between items-center h-16">
             <div className="flex items-center space-x-3">
-              <div className="bg-white/20 backdrop-blur-sm text-white rounded-xl w-12 h-12 flex items-center justify-center shadow-lg">
-                <Calculator className="w-6 h-6" />
+              <div className="bg-white/20 backdrop-blur-sm rounded-xl w-12 h-12 flex items-center justify-center shadow-lg p-2">
+                <img 
+                  src="https://img.icons8.com/papercut/50/calculator.png" 
+                  alt="BisnisKu Logo" 
+                  className="w-8 h-8 object-contain"
+                />
               </div>
               <div>
                 <h1 className="text-2xl font-bold text-white">BisnisKu</h1>
+                <p className="text-blue-100 text-xs">Business Management</p>
               </div>
             </div>
             

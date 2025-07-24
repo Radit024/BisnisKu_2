@@ -217,26 +217,26 @@ export default function TransactionForm() {
               value={form.watch('paymentMethod')}
               onValueChange={(value) => form.setValue('paymentMethod', value)}
             >
-              <SelectTrigger className="border border-gray-300 rounded-md focus:border-blue-500 focus:ring-1 focus:ring-blue-500">
+              <SelectTrigger className="border border-gray-300 rounded-md focus:border-blue-500 focus:ring-1 focus:ring-blue-500 bg-white">
                 <div className="flex items-center">
                   {watchedPaymentMethod && getPaymentMethodIcon(watchedPaymentMethod)}
                   <SelectValue placeholder="Pilih metode pembayaran" className="ml-2" />
                 </div>
               </SelectTrigger>
-              <SelectContent className="border border-gray-300 rounded-md shadow-lg">
-                <SelectItem value="cash" className="hover:bg-gray-50">
+              <SelectContent className="border border-gray-300 rounded-md shadow-lg bg-white">
+                <SelectItem value="cash" className="hover:bg-gray-50 bg-white">
                   <div className="flex items-center space-x-2">
                     <Banknote className="w-4 h-4 text-green-600" />
                     <span>Tunai</span>
                   </div>
                 </SelectItem>
-                <SelectItem value="bank_transfer" className="hover:bg-gray-50">
+                <SelectItem value="bank_transfer" className="hover:bg-gray-50 bg-white">
                   <div className="flex items-center space-x-2">
                     <CreditCard className="w-4 h-4 text-blue-600" />
                     <span>Transfer Bank</span>
                   </div>
                 </SelectItem>
-                <SelectItem value="e_wallet" className="hover:bg-gray-50">
+                <SelectItem value="e_wallet" className="hover:bg-gray-50 bg-white">
                   <div className="flex items-center space-x-2">
                     <Smartphone className="w-4 h-4 text-purple-600" />
                     <span>E-wallet</span>
