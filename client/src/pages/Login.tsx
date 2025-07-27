@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
@@ -6,9 +6,9 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Calculator, Eye, EyeOff, Mail, Lock, ArrowRight, Sparkles, Shield, CheckCircle, Users } from 'lucide-react';
+import { Calculator, Eye, EyeOff, Mail, Lock, ArrowRight, Sparkles, Shield } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
-import { signInWithGoogle, signInWithEmail, signUpWithEmail, handleRedirectResult } from '@/lib/auth';
+import { signInWithGoogle, signInWithEmail, signUpWithEmail } from '@/lib/auth';
 
 const loginSchema = z.object({
   email: z.string().email('Format email tidak valid'),
@@ -31,29 +31,6 @@ export default function Login() {
       password: '',
     },
   });
-
-  useEffect(() => {
-    // Handle redirect result from Google sign-in
-    handleRedirectResult()
-      .then((result) => {
-        if (result?.user) {
-          console.log('Google sign-in successful:', result.user);
-          toast({
-            title: 'Selamat datang! 👋',
-            description: 'Anda berhasil masuk dengan Google',
-          });
-          // Auth state will be updated automatically and App.tsx will handle routing
-        }
-      })
-      .catch((error) => {
-        console.error('Redirect error:', error);
-        toast({
-          title: 'Error',
-          description: 'Gagal masuk dengan Google',
-          variant: 'destructive',
-        });
-      });
-  }, [toast]);
 
   const handleGoogleSignIn = async () => {
     try {

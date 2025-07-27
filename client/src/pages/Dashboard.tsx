@@ -16,6 +16,7 @@ import {
 } from 'lucide-react';
 import { formatCurrency } from '@/lib/currency';
 import { Link } from 'wouter';
+import { useAuth } from '@/hooks/useAuth';
 
 // Type definitions for API responses
 interface DashboardSummary {
@@ -40,6 +41,7 @@ interface StockItem {
 }
 
 export default function Dashboard() {
+  const { user } = useAuth();
   const { data: summary, isLoading } = useQuery<DashboardSummary>({
     queryKey: ['/api/dashboard/summary'],
   });
@@ -51,6 +53,41 @@ export default function Dashboard() {
   const { data: stockItems } = useQuery<StockItem[]>({
     queryKey: ['/api/stock'],
   });
+
+  // Function to get user's first name or display name
+  const getUserDisplayName = () => {
+    if (!user) return 'Pengguna';
+    
+    if (user.displayName) {
+      // If user has a display name, get the first name
+      const firstName = user.displayName.split(' ')[0];
+      return firstName;
+    }
+    
+    if (user.email) {
+      // If no display name, use the part before @ in email
+      const emailName = user.email.split('@')[0];
+      // Capitalize first letter
+      return emailName.charAt(0).toUpperCase() + emailName.slice(1);
+    }
+    
+    return 'Pengguna';
+  };
+
+  // Function to get greeting based on time of day
+  const getTimeBasedGreeting = () => {
+    const hour = new Date().getHours();
+    
+    if (hour < 12) {
+      return 'Selamat pagi';
+    } else if (hour < 17) {
+      return 'Selamat siang';
+    } else if (hour < 19) {
+      return 'Selamat sore';
+    } else {
+      return 'Selamat malam';
+    }
+  };
 
   if (isLoading) {
     return (
@@ -75,12 +112,12 @@ export default function Dashboard() {
 
   return (
     <div className="space-y-6">
-      {/* Simplified Hero Header */}
+      {/* Personalized Hero Header */}
       <div className="bg-gradient-to-r from-blue-600 to-indigo-700 rounded-xl p-6 text-white shadow-lg">
         <div className="flex items-center justify-between">
           <div>
             <h1 className="text-3xl font-bold mb-2">
-              Dashboard BisnisKu 👋
+              {getTimeBasedGreeting()}, {getUserDisplayName()}! 👋
             </h1>
             <p className="text-blue-100">
               {new Date().toLocaleDateString('id-ID', { 
