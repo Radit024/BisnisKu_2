@@ -1,5 +1,5 @@
 import { 
-  signInWithRedirect, 
+  signInWithPopup,
   signInWithEmailAndPassword,
   createUserWithEmailAndPassword,
   signOut,
@@ -13,7 +13,7 @@ import { auth } from "./firebase";
 const provider = new GoogleAuthProvider();
 
 export const signInWithGoogle = () => {
-  return signInWithRedirect(auth, provider);
+  return signInWithPopup(auth, provider);
 };
 
 export const signInWithEmail = (email: string, password: string) => {

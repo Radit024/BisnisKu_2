@@ -12,11 +12,14 @@ export async function apiRequest(
   url: string,
   data?: unknown | undefined,
 ): Promise<Response> {
+  const uid = localStorage.getItem("uid"); // GET uid dari localStorage
   const res = await fetch(url, {
     method,
-    headers: data ? { "Content-Type": "application/json" } : {},
+    headers: {
+      ...(data && { "Content-Type": "application/json" }),
+      ...(uid && { "Authorization": uid }),
+    },
     body: data ? JSON.stringify(data) : undefined,
-    credentials: "include",
   });
 
   await throwIfResNotOk(res);
@@ -24,17 +27,31 @@ export async function apiRequest(
 }
 
 type UnauthorizedBehavior = "returnNull" | "throw";
+
 export const getQueryFn: <T>(options: {
   on401: UnauthorizedBehavior;
 }) => QueryFunction<T> =
   ({ on401: unauthorizedBehavior }) =>
   async ({ queryKey }) => {
+    const uid = localStorage.getItem("uid"); // GET dari localStorage
+    
     const res = await fetch(queryKey.join("/") as string, {
-      credentials: "include",
+      headers: {
+        // Manual auth header dari localStorage
+        ...(uid && { "Authorization": `${uid}` }),
+        "Content-Type": "application/json",
+      },
+      credentials: "include", // PLUS auto cookies (jika backend butuh)
     });
 
-    if (unauthorizedBehavior === "returnNull" && res.status === 401) {
-      return null;
+    if (res.status === 401) {
+      localStorage.removeItem("uid"); // Clear localStorage
+      
+      if (unauthorizedBehavior === "returnNull") {
+        return null;
+      }
+      
+      throw new Error("Unauthorized");
     }
 
     await throwIfResNotOk(res);

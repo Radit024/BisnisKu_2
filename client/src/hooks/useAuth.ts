@@ -10,6 +10,7 @@ export const useAuth = () => {
     const unsubscribe = onAuthStateChange((user) => {
       console.log('Auth state changed:', user ? 'User logged in' : 'User logged out');
       setUser(user);
+      user ? localStorage.setItem('uid', user.uid) : "";
       setLoading(false);
     });
 

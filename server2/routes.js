@@ -3,7 +3,7 @@ import {
   insertTransactionSchema,
   insertProductionSchema,
   insertStockMovementSchema,
-} from "../shared/schema.js";
+} from "./schema.js";
 import { parse } from "path";
 
 export async function registerRoutes(app) {
@@ -11,16 +11,15 @@ export async function registerRoutes(app) {
   // Middleware to get user from Firebase (simulated)
   app.use("/api", async (req, res, next) => {
     // In a real app, this would verify Firebase token
-    const firebaseUid = req.headers.authorization || "demo-user";
+    const firebaseUid = req.headers.authorization;
+    
+    console.log(firebaseUid);
 
-    let user = await storage.getUserByFirebaseUid(firebaseUid);
-    if (!user) {
-      user = await storage.createUser({
-        firebaseUid,
-        email: "demo@example.com",
-        displayName: "Demo User",
-      });
-    }
+    let user = await storage.getUserByFirebaseUid(firebaseUid) || {
+        id : 1
+    };
+    
+    console.log(user);
 
     req.user = user;
     next();
