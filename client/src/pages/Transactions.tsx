@@ -20,6 +20,8 @@ import TransactionForm from '@/components/TransactionForm';
 export default function Transactions() {
   const { data: transactions = [], isLoading } = useQuery({
     queryKey: ['/api/transactions'],
+    gcTime: 0, // Garbage collection time = 0 (data langsung dihapus)
+    staleTime: 0, // Data selalu dianggap stale
   });
   
   console.log(transactions)

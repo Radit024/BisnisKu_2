@@ -18,6 +18,8 @@ import ProductionForm from '@/components/ProductionForm';
 export default function Production() {
   const { data: productions, isLoading } = useQuery({
     queryKey: ['/api/productions'],
+    gcTime: 0, // Garbage collection time = 0 (data langsung dihapus)
+    staleTime: 0, // Data selalu dianggap stale
   });
 
   // Mock data untuk statistik produksi

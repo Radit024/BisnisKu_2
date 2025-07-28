@@ -14,8 +14,10 @@ import {
 import StockForm from '@/components/StockForm';
 
 export default function Stock() {
-  const { data: stockItems, isLoading } = useQuery({
+  const { data: stockItems = [], isLoading } = useQuery({
     queryKey: ['/api/stock'],
+    gcTime: 0, // Garbage collection time = 0 (data langsung dihapus)
+    staleTime: 0, // Data selalu dianggap stale
   });
 
   // Calculate stock statistics

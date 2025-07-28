@@ -1,4 +1,3 @@
-import { MemStorage } from "./storage.js";
 import {
   insertTransactionSchema,
   insertProductionSchema,
@@ -6,7 +5,17 @@ import {
 } from "./schema.js";
 import {
   createTransactions,
-  getTransactions
+  getTransactions,
+  createProductions,
+  getProductions,
+  createStockItem,
+  createStockMovement,
+  getStockItems,
+  getLowStockItems,
+  getFinancialSummary,
+  getTopProducts,
+  getHPPData,
+  getBEPData
 } from "./query.js";
 import { parse } from "path";
 import jwt from "jsonwebtoken";
@@ -18,7 +27,6 @@ async function getKey(header, callback){
 }
 
 export async function registerRoutes(app) {
-  const storage = new MemStorage();
   // Middleware to get user from Firebase (simulated)
   app.use("/api", async (req, res, next) => {
     // In a real app, this would verify Firebase token
@@ -81,7 +89,7 @@ export async function registerRoutes(app) {
 
   // Production endpoints
   app.get("/api/productions", async (req, res) => {
-    const productions = await storage.getProductionsByUserId(req.user.id);
+    const productions = await getProductions(req.user.user_id);
     res.json(productions);
   });
 
@@ -90,9 +98,9 @@ export async function registerRoutes(app) {
       const { materials, ...productionData } = req.body;
       const data = insertProductionSchema.parse({
         ...productionData,
-        userId: req.user.id,
+        userUid: req.user.user_id,
       });
-      const production = await storage.createProduction(data, materials);
+      const production = await createProductions(data, materials);
       res.json(production);
     } catch (error) {
       res.status(400).json({ error: "Invalid production data", more_info: error.message });
@@ -101,12 +109,12 @@ export async function registerRoutes(app) {
 
   // Stock endpoints
   app.get("/api/stock", async (req, res) => {
-    const stockItems = await storage.getStockItemsByUserId(req.user.id);
+    const stockItems = await getStockItems(req.user.user_id);
     res.json(stockItems);
   });
 
   app.get("/api/stock/low", async (req, res) => {
-    const lowStockItems = await storage.getLowStockItems(req.user.id);
+    const lowStockItems = await getLowStockItems(req.user.user_id);
     res.json(lowStockItems);
   });
 
@@ -116,8 +124,8 @@ export async function registerRoutes(app) {
         req.body;
 
       // Get or create stock item
-      const stockItem = await storage.getOrCreateStockItem(
-        req.user.id,
+      const stockItem = await createStockItem(
+        req.user.user_id,
         itemName,
         type,
         "kg" // Default unit
@@ -127,7 +135,7 @@ export async function registerRoutes(app) {
 
       // Create stock movement
       const movementData = insertStockMovementSchema.parse({
-        userId: req.user.id,
+        userUid: req.user.user_id,
         stockItemId: stockItem.id,
         date,
         type: movementType,
@@ -136,10 +144,7 @@ export async function registerRoutes(app) {
         notes,
       });
 
-      const movement = await storage.createStockMovement(movementData);
-
-      // Update stock quantity
-      await storage.updateStockQuantity(stockItem.id, quantity, movementType);
+      const movement = await createStockMovement(movementData);
 
       res.json(movement);
     } catch (error) {
@@ -154,22 +159,22 @@ export async function registerRoutes(app) {
 
   // Reports endpoints
   app.get("/api/reports/financial", async (req, res) => {
-    const summary = await storage.getFinancialSummary(req.user.id);
+    const summary = await getFinancialSummary(req.user.user_id);
     res.json(summary);
   });
 
   app.get("/api/reports/top-products", async (req, res) => {
-    const topProducts = await storage.getTopProducts(req.user.id);
+    const topProducts = await getTopProducts(req.user.user_id);
     res.json(topProducts);
   });
 
   app.get("/api/reports/hpp", async (req, res) => {
-    const hppData = await storage.getHPPData(req.user.id);
+    const hppData = await getHPPData(req.user.user_id);
     res.json(hppData);
   });
 
   app.get("/api/reports/bep", async (req, res) => {
-    const bepData = await storage.getBEPData(req.user.id);
+    const bepData = await getBEPData(req.user.user_id);
     res.json(bepData);
   });
 }

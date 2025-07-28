@@ -23,18 +23,26 @@ export default function Reports() {
   
   const { data: financialSummary = {}, isLoading: loadingFinancial } = useQuery({
     queryKey: ['/api/reports/financial'],
+    gcTime: 0, // Garbage collection time = 0 (data langsung dihapus)
+    staleTime: 0, // Data selalu dianggap stale
   });
 
   const { data: topProducts = [], isLoading: loadingProducts } = useQuery({
     queryKey: ['/api/reports/top-products'],
+    gcTime: 0, // Garbage collection time = 0 (data langsung dihapus)
+    staleTime: 0, // Data selalu dianggap stale
   });
 
   const { data: hpp = [], isLoading: loadingHpp } = useQuery({
     queryKey: ['/api/reports/hpp'],
+    gcTime: 0, // Garbage collection time = 0 (data langsung dihapus)
+    staleTime: 0, // Data selalu dianggap stale
   });
 
   const { data: bep = [], isLoading: loadingBep } = useQuery({
     queryKey: ['/api/reports/bep'],
+    gcTime: 0, // Garbage collection time = 0 (data langsung dihapus)
+    staleTime: 0, // Data selalu dianggap stale
   });
 
   // Mock data untuk rekapan
@@ -498,7 +506,7 @@ export default function Reports() {
                         <div className="bg-white rounded-lg p-2 border">
                           <p className="text-orange-700 font-medium text-xs mb-1">HPP per Unit</p>
                           <p className="text-sm font-bold text-orange-800">
-                            {formatCurrency(item.hpp)}
+                            {formatCurrency(item.hppPerUnit)}
                           </p>
                         </div>
                       </div>
