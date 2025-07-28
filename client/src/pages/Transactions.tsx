@@ -18,17 +18,31 @@ import { formatCurrency } from '@/lib/currency';
 import TransactionForm from '@/components/TransactionForm';
 
 export default function Transactions() {
-  const { data: transactions, isLoading } = useQuery({
+  const { data: transactions = [], isLoading } = useQuery({
     queryKey: ['/api/transactions'],
   });
+  
+  console.log(transactions)
+  
+  const todayStats = {
+      transactionCount : transactions.length,
+      income : transactions
+        .filter(transaksi => transaksi.type === "income")
+        .reduce((total, transaksi) => total + transaksi.amount, 0),
+      expense : transactions
+        .filter(transaksi => transaksi.type === "expense")
+        .reduce((total, transaksi) => total + transaksi.amount, 0)
+  }
+  
+  todayStats.profit = todayStats.income - todayStats.expense;
 
   // Mock data for summary stats
-  const todayStats = {
+  /*const todayStats = {
     income: 2500000,
     expense: 750000,
     profit: 1750000,
     transactionCount: 12
-  };
+  };*/
 
   const getPaymentIcon = (method: string) => {
     switch (method) {
@@ -105,7 +119,7 @@ export default function Transactions() {
               </div>
               <div>
                 <p className="text-sm text-gray-600">Keuntungan</p>
-                <p className="text-xl font-bold text-gray-900">
+                <p className={`text-xl font-bold ${ todayStats.profit < 1 ? 'text-red-600' : 'text-green-600' }`}>
                   {formatCurrency(todayStats.profit)}
                 </p>
               </div>

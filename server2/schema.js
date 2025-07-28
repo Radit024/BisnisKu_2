@@ -1,22 +1,14 @@
-import { pgTable, text, serial, integer, boolean, timestamp, decimal, uuid } from "drizzle-orm/pg-core";
+import { pgTable, text, serial, integer, boolean, timestamp, decimal, uuid, varchar } from "drizzle-orm/pg-core";
 import { createInsertSchema } from "drizzle-zod";
 import { z } from "zod";
 
-export const users = pgTable("users", {
-  id: serial("id").primaryKey(),
-  firebaseUid: text("firebase_uid").notNull().unique(),
-  email: text("email").notNull(),
-  displayName: text("display_name"),
-  createdAt: timestamp("created_at").defaultNow(),
-});
-
 export const transactions = pgTable("transactions", {
   id: serial("id").primaryKey(),
-  userId: integer("user_id").references(() => users.id).notNull(),
+  userUid: varchar("user_id", 255).notNull(),
   date: text("date").notNull(),
   type: text("type").notNull(), // "income" or "expense"
   description: text("description").notNull(),
-  amount: decimal("amount", { precision: 15, scale: 2 }).notNull(),
+  amount: integer("amount").notNull(),
   paymentMethod: text("payment_method").notNull(),
   notes: text("notes"),
   createdAt: timestamp("created_at").defaultNow(),
@@ -24,7 +16,7 @@ export const transactions = pgTable("transactions", {
 
 export const productions = pgTable("productions", {
   id: serial("id").primaryKey(),
-  userId: integer("user_id").references(() => users.id).notNull(),
+  userUid: varchar("user_id", 255).notNull(),
   date: text("date").notNull(),
   productName: text("product_name").notNull(),
   quantity: integer("quantity").notNull(),
@@ -42,7 +34,7 @@ export const productionMaterials = pgTable("production_materials", {
 
 export const stockItems = pgTable("stock_items", {
   id: serial("id").primaryKey(),
-  userId: integer("user_id").references(() => users.id).notNull(),
+  userUid: varchar("user_id", 255).notNull(),
   itemName: text("item_name").notNull(),
   type: text("type").notNull(), // "raw_material" or "finished_product"
   currentStock: decimal("current_stock", { precision: 10, scale: 2 }).notNull().default("0"),
@@ -52,7 +44,7 @@ export const stockItems = pgTable("stock_items", {
 
 export const stockMovements = pgTable("stock_movements", {
   id: serial("id").primaryKey(),
-  userId: integer("user_id").references(() => users.id).notNull(),
+  userUid: varchar("user_id", 255).notNull(),
   stockItemId: integer("stock_item_id").references(() => stockItems.id).notNull(),
   date: text("date").notNull(),
   type: text("type").notNull(), // "in" or "out"
@@ -60,11 +52,6 @@ export const stockMovements = pgTable("stock_movements", {
   reason: text("reason").notNull(),
   notes: text("notes"),
   createdAt: timestamp("created_at").defaultNow(),
-});
-
-export const insertUserSchema = createInsertSchema(users).omit({
-  id: true,
-  createdAt: true,
 });
 
 export const insertTransactionSchema = createInsertSchema(transactions).omit({

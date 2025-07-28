@@ -4,41 +4,65 @@ import {
   insertProductionSchema,
   insertStockMovementSchema,
 } from "./schema.js";
+import {
+  createTransactions,
+  getTransactions
+} from "./query.js";
 import { parse } from "path";
+import jwt from "jsonwebtoken";
+import axios from "axios";
+
+async function getKey(header, callback){
+  const pkey = await axios.get('https://www.googleapis.com/robot/v1/metadata/x509/securetoken@system.gserviceaccount.com').then(res => res.data);
+  callback(null, pkey[header.kid]);
+}
 
 export async function registerRoutes(app) {
   const storage = new MemStorage();
   // Middleware to get user from Firebase (simulated)
   app.use("/api", async (req, res, next) => {
     // In a real app, this would verify Firebase token
-    const firebaseUid = req.headers.authorization;
+    const firebaseToken = req.headers.authorization.split("Bearer ")[1];
     
-    console.log(firebaseUid);
-
-    let user = await storage.getUserByFirebaseUid(firebaseUid) || {
-        id : 1
-    };
-    
-    console.log(user);
-
-    req.user = user;
-    next();
+    await jwt.verify(firebaseToken, getKey,{ algorithms: ['RS256'] }, function(err, decoded) {
+      if(err) return res.status(401).json({"error" : "Unauthorized"});
+      console.log(decoded) // bar
+      req.user = decoded;
+      next();
+    });
   });
 
   // Dashboard endpoints
   app.get("/api/dashboard/summary", async (req, res) => {
-    const summary = await storage.getDashboardSummary(req.user.id);
-    res.json(summary);
+    const totalTransactions = await getTransactions(req.user.user_id);
+    const todayIncome = totalTransactions
+      .filter(t => t.type === 'income')
+      .reduce((sum, t) => sum + parseFloat(t.amount), 0);
+    
+    const todayExpenses = totalTransactions
+      .filter(t => t.type === 'expense')
+      .reduce((sum, t) => sum + parseFloat(t.amount), 0);
+    
+    const productsSold = totalTransactions
+      .filter(t => t.type === 'income')
+      .length;
+      
+    res.json({
+        todayIncome,
+        todayExpenses,
+        productsSold
+    });
   });
 
   // Transaction endpoints
   app.get("/api/transactions", async (req, res) => {
-    const transactions = await storage.getTransactionsByUserId(req.user.id);
+    const transactions = await getTransactions(req.user.user_id);
     res.json(transactions);
   });
 
   app.get("/api/transactions/recent", async (req, res) => {
-    const transactions = await storage.getRecentTransactions(req.user.id, 5);
+    const transactions = await getTransactions(req.user.user_id, {latest : true});
+    console.log(transactions);
     res.json(transactions);
   });
 
@@ -46,9 +70,9 @@ export async function registerRoutes(app) {
     try {
       const data = insertTransactionSchema.parse({
         ...req.body,
-        userId: req.user.id,
+        userUid: req.user.user_id,
       });
-      const transaction = await storage.createTransaction(data);
+      const transaction = await createTransactions(data);
       res.json(transaction);
     } catch (error) {
       res.status(400).json({ error: "Invalid transaction data", more_info: error.message });

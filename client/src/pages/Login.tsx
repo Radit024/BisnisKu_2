@@ -1,5 +1,7 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { useLocation } from 'wouter';
 import { useForm } from 'react-hook-form';
+import { useAuth } from "@/hooks/useAuth";
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import { Button } from '@/components/ui/button';
@@ -22,7 +24,17 @@ export default function Login() {
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [isGoogleLoading, setIsGoogleLoading] = useState(false);
+  const [, setLocation] = useLocation();
+  const { user, loading } = useAuth();
   const { toast } = useToast();
+  
+  useEffect(() => {
+    // When user logs in successfully, redirect to dashboard
+    if (user && !loading) {
+      console.log('User authenticated, redirecting to dashboard');
+      setLocation('/');
+    }
+  }, [user, loading, setLocation]);
   
   const form = useForm<LoginFormData>({
     resolver: zodResolver(loginSchema),

@@ -1,5 +1,4 @@
 export class MemStorage {
-    users = new Map();
     transactions = new Map();
     productions = new Map();
     productionMaterials = new Map();
@@ -15,26 +14,6 @@ export class MemStorage {
     constructor() {
         // Initialize with sample data if needed
     }
-
-  async getUser(id) {
-    return this.users.get(id);
-  }
-
-  async getUserByFirebaseUid(firebaseUid) {
-    return Array.from(this.users.values()).find(user => user.firebaseUid === firebaseUid);
-  }
-
-  async createUser(insertUser) {
-    const id = this.currentUserId++;
-    const user = {
-      ...insertUser,
-      id,
-      displayName: insertUser.displayName || null,
-      createdAt: new Date()
-    };
-    this.users.set(id, user);
-    return user;
-  }
 
   async getTransactionsByUserId(userId) {
     return Array.from(this.transactions.values())

@@ -156,7 +156,7 @@ export default function Dashboard() {
                 <TrendingUp className="w-5 h-5 text-green-600" />
               </div>
               <div>
-                <p className="text-sm text-gray-600">Penjualan Hari Ini</p>
+                <p className="text-sm text-gray-600">Pemasukan</p>
                 <p className="text-xl font-bold text-gray-900">
                   {formatCurrency(summary?.todayIncome || 0)}
                 </p>

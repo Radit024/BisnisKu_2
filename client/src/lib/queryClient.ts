@@ -12,12 +12,12 @@ export async function apiRequest(
   url: string,
   data?: unknown | undefined,
 ): Promise<Response> {
-  const uid = localStorage.getItem("uid"); // GET uid dari localStorage
+  const uid = localStorage.getItem("idToken"); // GET uid dari localStorage
   const res = await fetch(url, {
     method,
     headers: {
       ...(data && { "Content-Type": "application/json" }),
-      ...(uid && { "Authorization": uid }),
+      ...(uid && { "Authorization": `Bearer ${uid}` }),
     },
     body: data ? JSON.stringify(data) : undefined,
   });
@@ -33,12 +33,12 @@ export const getQueryFn: <T>(options: {
 }) => QueryFunction<T> =
   ({ on401: unauthorizedBehavior }) =>
   async ({ queryKey }) => {
-    const uid = localStorage.getItem("uid"); // GET dari localStorage
+    const uid = localStorage.getItem("idToken"); // GET dari localStorage
     
     const res = await fetch(queryKey.join("/") as string, {
       headers: {
         // Manual auth header dari localStorage
-        ...(uid && { "Authorization": `${uid}` }),
+        ...(uid && { "Authorization": `Bearer ${uid}` }),
         "Content-Type": "application/json",
       },
       credentials: "include", // PLUS auto cookies (jika backend butuh)

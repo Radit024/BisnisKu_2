@@ -8,37 +8,20 @@ export const useAuth = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // Handle redirect result first
-    handleRedirectResult()
-      .then((result) => {
-        if (result?.user) {
-          console.log('Google sign-in redirect successful:', result.user);
-          setUser(result.user);
-          setLoading(false);
-          
-          // Show success toast for Google login
-          toast({
-            title: 'Selamat datang! 👋',
-            description: 'Anda berhasil masuk dengan Google',
-          });
-        }
-      })
-      .catch((error) => {
-        console.error('Redirect result error:', error);
-        if (error.code && error.code !== 'auth/popup-closed-by-user') {
-          toast({
-            title: 'Error',
-            description: 'Gagal masuk dengan Google',
-            variant: 'destructive',
-          });
-        }
-      });
-
     // Then set up auth state listener
     const unsubscribe = onAuthStateChange((user) => {
-      console.log('Auth state changed:', user ? 'User logged in' : 'User logged out');
+      if (user) {
+        user.getIdToken(/* forceRefresh */ true)
+          .then(function(idToken) {
+            // Simpan token atau kirim ke backend
+            localStorage.setItem('idToken', idToken);
+            // Atau langsung kirim ke backend
+          })
+          .catch(function(error) {
+            console.error('Failed to get ID token:', error);
+          });
+      }
       setUser(user);
-      user ? localStorage.setItem('uid', user.uid) : "";
       setLoading(false);
     });
 

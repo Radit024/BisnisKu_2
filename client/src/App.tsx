@@ -31,15 +31,6 @@ function AuthenticatedApp() {
 
 function Router() {
   const { user, loading } = useAuth();
-  const [, setLocation] = useLocation();
-
-  useEffect(() => {
-    // When user logs in successfully, redirect to dashboard
-    if (user && !loading) {
-      console.log('User authenticated, redirecting to dashboard');
-      setLocation('/');
-    }
-  }, [user, loading, setLocation]);
 
   if (loading) {
     return (
