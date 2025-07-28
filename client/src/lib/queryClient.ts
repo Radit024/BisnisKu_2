@@ -45,7 +45,7 @@ export const getQueryFn: <T>(options: {
     });
 
     if (res.status === 401) {
-      localStorage.removeItem("uid"); // Clear localStorage
+      localStorage.removeItem("idToken"); // Clear localStorage
       
       if (unauthorizedBehavior === "returnNull") {
         return null;
